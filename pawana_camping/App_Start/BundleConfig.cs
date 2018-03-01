@@ -24,7 +24,10 @@ namespace pawana_camping
                       "~/Content/bootstrap.css",
                       "~/Content/component.css",
                       "~/Content/font-awesome.css",
-                      "~/Content/style.css"));
+                      "~/Content/style.css",
+                      "~/Content/magnific-popup.css",
+                      "~/Content/animate.css"
+                      ));
         }
     }
 }

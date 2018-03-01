@@ -173,6 +173,7 @@
     <Content Include="fonts\GreatVibes-Regular.ttf" />
     <Content Include="images\1.jpg" />
     <Content Include="images\2.jpg" />
+    <Content Include="images\Video.mp4" />
     <Content Include="images\about.jpg" />
     <Content Include="images\arrow.png" />
     <Content Include="images\b1.jpg" />
