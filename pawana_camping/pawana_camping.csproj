@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -173,6 +174,8 @@
     <Content Include="fonts\GreatVibes-Regular.ttf" />
     <Content Include="images\1.jpg" />
     <Content Include="images\2.jpg" />
+    <Content Include="images\fb_review.PNG" />
+    <Content Include="images\pavana_lake_lonavala.jpg" />
     <Content Include="images\Video.mp4" />
     <Content Include="images\about.jpg" />
     <Content Include="images\arrow.png" />
