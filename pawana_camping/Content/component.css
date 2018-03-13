@@ -42,10 +42,10 @@ ul.side_nav li {
 	padding: 0;
 	color: #f9f1e9;
 	text-align: center;
-	top: 50%;
-	left: 50%;
-	-webkit-transform: translate3d(-50%,-50%,0);
-	transform: translate3d(-50%,-50%,0);
+	top: 70%;
+	left: 48%;
+	-webkit-transform: translate3d(-70%,-48%,0);
+	transform: translate3d(-70%,-48%,0);
 }
 
 .demo-1 .main-title, 
@@ -114,6 +114,7 @@ h1.main-title a:focus{
 	text-transform: uppercase;
 	font-family: Londrina Outline, sans-serif;
 }
+
 .link {
 	outline: none;
 	text-decoration: none;
@@ -122,17 +123,19 @@ h1.main-title a:focus{
 	color: #9e9ba4;
 	display: inline-block;
 }
+
 /* Takiri */
 .link--takiri {
 	font-family: 'Playfair Display', serif;
     font-weight: 400;
-    font-size: 4em;
-    padding: 0 10px 20px;
+    font-size: 3em;
+    padding: 0 10px 10px;
 	-webkit-transition: color 0.5s;
 	transition: color 0.5s;
 	font-family: 'Great Vibes', cursive;
 }
 
+/*
 .link--takiri:hover {
     color: #fff;
 }
@@ -152,12 +155,13 @@ h1.main-title a:focus{
     -webkit-transition: -webkit-transform 0.5s;
     transition: transform 0.5s;
 }
-
-.link--takiri:hover::before {
+    */
+/*
+    .link--takiri:hover::before {
 	-webkit-transform: rotate3d(0,0,1,45deg) scale3d(1,1,1);
 	transform: rotate3d(0,0,1,45deg) scale3d(1,1,1);
 }
-
+*/
 .link--takiri span {
 	font-size: 25%;
     font-weight: 400;
@@ -187,7 +191,7 @@ h1.main-title a:focus{
 }
 
 .main-title .thin {
-	font-weight: 200;
+	font-weight: 100;
 }
 /*--responsive--*/
 @media (max-width:1440px){

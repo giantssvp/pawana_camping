@@ -23,7 +23,7 @@ namespace pawana_camping.Controllers
             return View();
         }
 
-        public ActionResult Services()
+        public ActionResult Events()
         {
             return View();
         }
