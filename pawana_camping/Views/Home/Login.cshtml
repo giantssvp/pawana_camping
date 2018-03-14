@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "login";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <title>Pawna Camping | Login</title>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700|Lato:400,100,300,700,900' rel='stylesheet' type='text/css' />
+
+    <link rel="stylesheet" href="../../Content/animate_login.css" />
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../../Content/style_login.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <form method="post" action=@Url.Action("login_btn", "Home")>
+        <div class="container">
+            <div class="login-box animated fadeInUp">
+                <div class="box-header">
+                    <h2>Pawna Camping Log In</h2>
+                </div>
+                <label for="username">Username <span style="color:red;">*</span></label>
+                <br />
+                <input type="text" name="username" id="username" required />
+                <br />
+                <label for="password">Password <span style="color:red;">*</span></label>
+                <br />
+                <input type="password" name="password" id="password" required />
+                <br />
+                <button type="submit" id="login_button" value="">Sign In</button>
+                <br />
+                <asp:Label ID="lblLogin" ForeColor="Red" />
+            </div>
+        </div>
+    </form>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('#logo').addClass('animated fadeInDown');
+        $("input:text:visible:first").focus();
+    });
+    $('#username').focus(function () {
+        $('label[for="username"]').addClass('selected');
+    });
+    $('#username').blur(function () {
+        $('label[for="username"]').removeClass('selected');
+    });
+    $('#password').focus(function () {
+        $('label[for="password"]').addClass('selected');
+    });
+    $('#password').blur(function () {
+        $('label[for="password"]').removeClass('selected');
+    });
+</script>
+
+</html>

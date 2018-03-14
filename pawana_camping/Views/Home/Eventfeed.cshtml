@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "EventFeed";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <title>Pawna Camping | EventFeed</title>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700|Lato:400,100,300,700,900' rel='stylesheet' type='text/css' />
+
+    <link rel="stylesheet" href="../../Content/animate_login.css" />
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../../Content/style_login.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="login-box animated fadeInUp">
+            <div class="box-header">
+                <h2>Pawna Camping Event</h2>
+            </div>
+            <form method="post" action=@Url.Action("submit_event_btn", "Home")>
+                <label for="heading">Event Heading <span style="color:red;">*</span></label>
+                <br />
+                <input type="text" name="heading" id="heading" required />
+                <br />
+                <label for="description">Description <span style="color:red;">*</span></label>
+                <br />
+                <textarea rows="4" cols="30" name="description" id="description" required></textarea>
+                <br />
+                <button type="submit" id="submit_button" value="submit">Submit</button>
+            </form>
+
+            <br />
+            <form method="post" action=@Url.Action("logout_btn", "Home")>
+                <button type="submit" id="logout_button" value="logout">Log Out</button>
+                <br />
+                <asp:Label ID="lblLogin" ForeColor="Red" />
+            </form>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('#logo').addClass('animated fadeInDown');
+        $("input:text:visible:first").focus();
+    });
+    $('#username').focus(function () {
+        $('label[for="username"]').addClass('selected');
+    });
+    $('#username').blur(function () {
+        $('label[for="username"]').removeClass('selected');
+    });
+    $('#password').focus(function () {
+        $('label[for="password"]').addClass('selected');
+    });
+    $('#password').blur(function () {
+        $('label[for="password"]').removeClass('selected');
+    });
+</script>
+
+</html>
