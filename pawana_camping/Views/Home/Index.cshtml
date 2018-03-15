@@ -65,23 +65,25 @@
             </div>
             <div class="modal-body about">
                 <div class="about">
-                    <h2 class="tittle wow fadeInUp animated animated" data-wow-delay=".5s">About US</h2>
+                    <h2 class="tittle wow fadeInUp animated animated" data-wow-delay=".5s">Trek Around</h2>
                     <div class="about-inner">
 
-                        <img src="~/images/about_us.jpg" alt="about" />
-                        <h4 class="tittle">About US</h4>
+                        <img src="~/images/trekking1.jpg" alt="about" />
+                        <h4 class="tittle">Trek Around</h4>
                         <p align="justify">
-                                Janavi Pawana Lake camping  is situated on the bank of the Pawana dam and budgeted camping for weekend plan. <br/>
-                                Pawana Dam is 50 kms from Pune and 10 kms from Lonavala. You can see the lake water easily from this location. <br/>
-                                Also this place is surrounded by four major forts named Tung, Tikona, Lohagad and Visapur. Special attraction 
-                                of Pawana Camping is  water view site, music with dance, camp fire, BBQ and  home made dinner/ lunch.<br/><br/>
-
-                  
-                                1. Evening Welcome tea+ Hot Pakode<br/>
-                                2. Unlimited dinner( veg/ non-veg)<br/>
-                                3. Camp fire with music<br/>
-                                4. Tent stay<br/>
-                                5. Next day morning tea+ breakfast<br/>
+                            Below are the trekking and Dining options near us. <br /> <br />
+                                1. Tikona Fort 2KM<br/>
+                                2. Lohagad Fort 12KM<br/>
+                                3. Tung Fort 20KM<br/>
+                                4. Bedse Caves 8KM<br/>
+                                5. Bhaje Caves 12KM<br/>
+                                6. Karle Caves 20KM <br/>
+                                7. Tiger Point 20KM <br />
+                                8. Bhushi Dam 17KM <br/>
+                                9. Pawna Lake 0KM <br />
+                               10. Pawna River 1KM <br/>
+                               11. Balaji Restaurant 5KM <br/>
+                               12. Shantai Restaurant 4KM <br />
                         </p>
                     </div>
                 </div>
@@ -418,34 +420,34 @@
                     <div class="col-md-6 pic wow fadeInRight animated animated" data-wow-delay=".5s">
                         Booking Form
                         
-                            <form>
+                            <form method="post" action=@Url.Action("PayNow","Home")>
                                 <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" required />
+                                    <input type="text" id="name" name="name" required />
                                     <label>Name</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="email" required />
+                                    <input type="email" id="email" name="email" required />
                                     <label>Email</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="tel" required />
+                                    <input type="tel" id="phone" name="phone" required />
                                     <label>Phone</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" required />
+                                    <input type="text" id="adult" name="adult" required />
                                     <label>Number of Adults</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" required />
+                                    <input type="text" id="child" name="child" required />
                                     <label>Number of Children</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" readonly />
+                                    <input type="text" id="total_cost" name="total_cost" readonly />
                                     <label>Total Cost</label>
                                     <span></span>
                                 </div>
