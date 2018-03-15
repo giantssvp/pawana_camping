@@ -18,7 +18,6 @@ namespace pawana_camping.Controllers
 
             var obj = new db_connect();
             List<string>[] list = new List<string>[3];
-            MessageBox.Show(offset.ToString());
             list = obj.events_show(offset);
             ViewBag.list = list;
             ViewBag.total = list[0].Count();
