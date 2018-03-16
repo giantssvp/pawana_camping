@@ -75,6 +75,75 @@ namespace pawana_camping.Controllers
             return View();
         }
 
+        public ActionResult PaymentSuccess()
+        {
+            try
+            {
+
+                string[] merc_hash_vars_seq;
+                string merc_hash_string = string.Empty;
+                string merc_hash = string.Empty;
+                string order_id = string.Empty;
+                string hash_seq = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+
+                if (Request.Form["status"] == "success")
+                {
+
+                    merc_hash_vars_seq = hash_seq.Split('|');
+                    Array.Reverse(merc_hash_vars_seq);
+                    merc_hash_string = ConfigurationManager.AppSettings["SALT"] + "|" + Request.Form["status"];
+
+
+                    foreach (string merc_hash_var in merc_hash_vars_seq)
+                    {
+                        merc_hash_string += "|";
+                        merc_hash_string = merc_hash_string + (Request.Form[merc_hash_var] != null ? Request.Form[merc_hash_var] : "");
+
+                    }
+                    Response.Write(merc_hash_string); //exit;
+                    merc_hash = Generatehash512(merc_hash_string).ToLower();
+
+
+
+                    if (merc_hash != Request.Form["hash"])
+                    {
+                        Response.Write("Hash value did not matched");
+
+                    }
+                    else
+                    {
+                        order_id = Request.Form["txnid"];
+
+                        Response.Write("value matched");
+
+                        //Hash value did not matched
+                    }
+
+                }
+
+                else
+                {
+
+                    Response.Write("Hash value did not matched");
+                    // osc_redirect(osc_href_link(FILENAME_CHECKOUT, 'payment' , 'SSL', null, null,true));
+
+                }
+                return View();
+            }
+
+            catch (Exception ex)
+            {
+                Response.Write("<span style='color:red'>" + ex.Message + "</span>");
+                return View();
+            }
+            
+        }
+
+        public ActionResult PaymentFailure()
+        {
+            return View();
+        }
+
         public ActionResult login_btn(string username, string password)
         {
             try
@@ -251,68 +320,23 @@ namespace pawana_camping.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
-        /*
-        public void PayNow1(string name, string email, string phone, string total_cost)
-        {
-            //initialize
-            
-            tokenContext.setPaymentMessageSession(null);
-            ViewData["PaymentMessage"] = null;
-            EMedical.DataModel.UserLabTest labTest = tokenContext.getCurrentUserTest();
-            if (labTest != null)
-            {*/
-
-        /*
-            string firstName = labTest.Patie;
-            string amount = labTest.PayablePrice.ToString();
-
-            string email = labTest.Email;
-            string phone = labTest.ContactNumber;
-            string productInfo = "Lab Product Purchase Online";
-            string key = ConfigurationManager.AppSettings["MERCHANT_KEY"];
-            string salt = ConfigurationManager.AppSettings["SALT"];
-            var DomainName = System.Web.HttpContext.Current.Request.Url.Host;
-        //posting all the parameters required for integration.
-            RemotePost myremotepost = new RemotePost();
-            myremotepost.Url = ConfigurationManager.AppSettings["PAYU_BASE_URL"];
-            myremotepost.Add("key", ConfigurationManager.AppSettings["MERCHANT_KEY"]);
-            string txnid = Generatetxnid();
-            myremotepost.Add("txnid", txnid);
-            myremotepost.Add("amount", amount);
-            myremotepost.Add("productinfo", productInfo);
-            myremotepost.Add("firstname", firstName);
-            myremotepost.Add("phone", phone);
-            myremotepost.Add("email", email);
-            myremotepost.Add("surl", "http://" + DomainName + "/User/Return");//Change the success url here depending upon the port number of your local system.
-            myremotepost.Add("furl", "http://" + DomainName + "/User/Return");//Change the failure url here depending upon the port number of your local system.
-            myremotepost.Add("service_provider", "payu_paisa");
-
-            string hashString = key + "|" + txnid + "|" + amount + "|" + productInfo + "|" + firstName + "|" + email + "|||||||||||" + salt;
-            string hash = Generatehash512(hashString);
-            myremotepost.Add("hash", hash);
-            myremotepost.Post();
-        //} 
-    } */
-
-    public string action1 = string.Empty;
+                
+        public string action1 = string.Empty;
         public string hash1 = string.Empty;
         public string txnid1 = string.Empty;
+        private object exit;
+
         public void PayNow(string name, string email, string phone, string total_cost)
         {
             try
             {
-
                 string[] hashVarsSeq;
                 string hash_string = string.Empty;
-
-
                 
                 Random rnd = new Random();
                 string strHash = Generatehash512(rnd.ToString() + DateTime.Now);
                 txnid1 = strHash.ToString().Substring(0, 20);
 
-                //frmError.Visible = false;
                 hashVarsSeq = ConfigurationManager.AppSettings["hashSequence"].Split('|'); // spliting hash sequence from config
                 hash_string = "";
                 foreach (string hash_var in hashVarsSeq)
@@ -329,83 +353,98 @@ namespace pawana_camping.Controllers
                     }
                     else if (hash_var == "amount")
                     {
-                        hash_string = hash_string + Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + 10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "productinfo")
+                    {
+                        hash_string = hash_string + "pawnacamp";
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "firstname")
+                    {
+                        hash_string = hash_string + "dharma";
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf1")
+                    {
+                        hash_string = hash_string + "udf1";
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf2")
+                    {
+                        hash_string = hash_string + "udf2";
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf3")
+                    {
+                        hash_string = hash_string + "udf3";
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf4")
+                    {
+                        hash_string = hash_string + "udf4";
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf5")
+                    {
+                        hash_string = hash_string + "udf5";
                         hash_string = hash_string + '|';
                     }
                     else
                     {
-
                         hash_string = hash_string + (Request.Form[hash_var] != null ? Request.Form[hash_var] : "");// isset if else
                         hash_string = hash_string + '|';
                     }
                 }
 
                 hash_string += ConfigurationManager.AppSettings["SALT"];// appending SALT
-
                 hash1 = Generatehash512(hash_string).ToLower();         //generating hash
                 action1 = ConfigurationManager.AppSettings["PAYU_BASE_URL"] + "/_payment"; // setting URL
-
-                    
                 
-
                 if (!string.IsNullOrEmpty(hash1))
                 {
-                   // hash.Value = hash1;
-                    //txnid.Value = txnid1;
-
                     System.Collections.Hashtable data = new System.Collections.Hashtable(); // adding values in gash table for data post
                     data.Add("hash", hash1);
                     data.Add("txnid", txnid1);
                     data.Add("key", ConfigurationManager.AppSettings["MERCHANT_KEY"]);
                     string AmountForm = "10";// eliminating trailing zeros
-                    //amount.Text = AmountForm;
                     data.Add("amount", AmountForm);
-                    data.Add("firstname", name);
-                    data.Add("email", email);
-                    data.Add("phone", phone);
-                    data.Add("productinfo", "tent booking");
-                    data.Add("surl", "www.pawnaheritagecamping.com");
-                    data.Add("furl", "www.pawnaheritagecamping.com");
+                    data.Add("firstname", "dharma");
+                    data.Add("email", "dharma9191@gmail.com");
+                    data.Add("phone", "9960044802");
+                    data.Add("productinfo", "pawnacamp");
+                    data.Add("surl", "http://localhost:64707/Home/PaymentSuccess");
+                    data.Add("furl", "http://localhost:64707/Home/PaymentFailure");
                     data.Add("lastname", "thakar");
-                    data.Add("curl", "www.pawnaheritagecamping.com");
+                    data.Add("curl", "http://www.pawnaheritagecamping.com");
                     data.Add("address1", "pune");
                     data.Add("address2", "pune");
                     data.Add("city", "pune");
                     data.Add("state", "maharashtra");
                     data.Add("country", "india");
                     data.Add("zipcode", "419406");
-                    data.Add("udf1", "");
-                    data.Add("udf2", "");
-                    data.Add("udf3", "");
-                    data.Add("udf4", "");
-                    data.Add("udf5", "");
+                    data.Add("udf1", "udf1");
+                    data.Add("udf2", "udf2");
+                    data.Add("udf3", "udf3");
+                    data.Add("udf4", "udf4");
+                    data.Add("udf5", "udf5");
                     data.Add("pg", "");
                     data.Add("service_provider", "payu_paisa");
-
-
+                    MessageBox.Show(action1);
                     string strForm = PreparePOSTForm(action1, data);
-                    // Page.Controls.Add(new LiteralControl(strForm));
-                    
-
+                    MessageBox.Show(strForm);
+                    Response.Write(strForm);
                 }
-
                 else
                 {
                     //no hash
-
                 }
-
             }
-
             catch (Exception ex)
-
             {
                 Response.Write("<span style='color:red'>" + ex.Message + "</span>");
-
             }
-
-
-
         }
 
         private string PreparePOSTForm(string url, System.Collections.Hashtable data)      // post form
@@ -425,7 +464,6 @@ namespace pawana_camping.Controllers
                                "\" value=\"" + key.Value + "\">");
             }
 
-
             strForm.Append("</form>");
             //Build the JavaScript which will do the Posting operation.
             StringBuilder strScript = new StringBuilder();
@@ -438,47 +476,9 @@ namespace pawana_camping.Controllers
             //(The order is important, Form then JavaScript)
             return strForm.ToString() + strScript.ToString();
         }
-
-        /*
-        [AllowAnonymous]
-        public ActionResult Return(System.Web.Mvc.FormCollection form = null)
-        {
-            try
-            {
-                string[] merc_hash_vars_seq;
-                string merc_hash_string = string.Empty;
-                string merc_hash = string.Empty;
-                string order_id = string.Empty;
-                string hash_seq = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
-                if (form["status"].ToString() == "success")
-                {
-                    merc_hash_vars_seq = hash_seq.Split('|');
-                    Array.Reverse(merc_hash_vars_seq);
-                    merc_hash_string = ConfigurationManager.AppSettings["SALT"] + "|" + form["status"].ToString();
-                    foreach (string merc_hash_var in merc_hash_vars_seq)
-                    {
-                        merc_hash_string += "|";
-                        merc_hash_string = merc_hash_string + (form[merc_hash_var] != null ? form[merc_hash_var] : "");
-                    }
-                    Response.Write(merc_hash_string);
-                    merc_hash = Generatehash512(merc_hash_string).ToLower();
-                    order_id = Request.Form["txnid"];
-                }
-                else
-                {
-                    tokenContext.setPaymentMessageSession("Payment Fails! Order Pending to save.");
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewData["PaymentMessage"] = "Payment Fails! Order Pending to save.";
-            }
-            return RedirectToAction("ActionName");
-        }
-        */
+                
         public string Generatehash512(string text)
         {
-
             byte[] message = Encoding.UTF8.GetBytes(text);
 
             UnicodeEncoding UE = new UnicodeEncoding();
@@ -491,7 +491,6 @@ namespace pawana_camping.Controllers
                 hex += String.Format("{0:x2}", x);
             }
             return hex;
-
         }
     }
 }
