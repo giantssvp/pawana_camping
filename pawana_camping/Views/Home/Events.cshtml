@@ -1,6 +1,31 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Events";
 }
 
 @Html.Partial("menu1")
+
+@{
+    var results = ViewBag.list;
+    int cnt = ViewBag.total;
+}
+
+@for (var i = 0; i < cnt; i++)
+{
+    <p><b><font color="#ffcc99">@results[0][i]</font></b>: <font color="#green"> @results[1][i] </font></p>
+    <span>@results[2][i]</span>
+}
+
+<div class="send wow shake animated animated" data-wow-delay=".5s">
+    <form method="post" action=@Url.Action("first_btn", "Home")>
+        <input type="submit" id="first" value="<<" style="width:50px">
+    </form>
+    <form method="post" action=@Url.Action("previous_btn", "Home")>
+        <input type="submit" id="previous" value="<" style="width:50px">
+    </form>
+    <form method="post" action=@Url.Action("next_btn", "Home")>
+        <input type="submit" id="next" value=">" style="width:50px">
+    </form>
+    <form method="post" action=@Url.Action("last_btn", "Home")>
+        <input type="submit" id="last" value=">>" style="width:50px">
+    </form>
+</div>

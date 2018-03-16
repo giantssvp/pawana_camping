@@ -49,6 +49,14 @@ namespace pawana_camping.Controllers
 
         public ActionResult Events()
         {
+            HttpContext.Session.Add("offset", 0);
+
+            var obj = new db_connect();
+            List<string>[] list = new List<string>[3];
+            list = obj.events_show(offset);
+            ViewBag.list = list;
+            ViewBag.total = list[0].Count();
+
             return View();
         }
 
@@ -205,7 +213,8 @@ namespace pawana_camping.Controllers
                 list = obj.events_show(1);
                 ViewBag.list = list;
                 ViewBag.total = list[0].Count();
-                return PartialView("event_show");
+
+                return View("Events");
             }
             catch (Exception ex)
             {
