@@ -320,7 +320,44 @@ namespace pawana_camping.Controllers
                     }
                     else if (hash_var == "amount")
                     {
-                        hash_string = hash_string + Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + 10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+                    //adding extra bu us
+                    else if (hash_var == "productinfo")
+                    {
+                        hash_string = hash_string + "pawnacamp";//10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "firstname")
+                    {
+                        hash_string = hash_string + "dharma";//10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+
+                    else if (hash_var == "udf1")
+                    {
+                        hash_string = hash_string + "udf1";//10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf2")
+                    {
+                        hash_string = hash_string + "udf2";//10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf3")
+                    {
+                        hash_string = hash_string + "udf3";//10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf4")
+                    {
+                        hash_string = hash_string + "udf4";//10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
+                        hash_string = hash_string + '|';
+                    }
+                    else if (hash_var == "udf5")
+                    {
+                        hash_string = hash_string + "udf5";//10;//Convert.ToDecimal(Request.Form[hash_var]).ToString("g29");
                         hash_string = hash_string + '|';
                     }
                     else
@@ -332,7 +369,7 @@ namespace pawana_camping.Controllers
                 }
 
                 hash_string += ConfigurationManager.AppSettings["SALT"];// appending SALT
-
+                MessageBox.Show(hash_string);
                 hash1 = Generatehash512(hash_string).ToLower();         //generating hash
                 action1 = ConfigurationManager.AppSettings["PAYU_BASE_URL"] + "/_payment"; // setting URL
 
@@ -351,10 +388,10 @@ namespace pawana_camping.Controllers
                     string AmountForm = "10";// eliminating trailing zeros
                     //amount.Text = AmountForm;
                     data.Add("amount", AmountForm);
-                    data.Add("firstname", name);
-                    data.Add("email", email);
-                    data.Add("phone", phone);
-                    data.Add("productinfo", "tent booking");
+                    data.Add("firstname", "dharma");
+                    data.Add("email", "dharma9191@gmail.com");
+                    data.Add("phone", "9960044802");
+                    data.Add("productinfo", "pawnacamp");
                     data.Add("surl", "www.pawnaheritagecamping.com");
                     data.Add("furl", "www.pawnaheritagecamping.com");
                     data.Add("lastname", "thakar");
@@ -365,16 +402,17 @@ namespace pawana_camping.Controllers
                     data.Add("state", "maharashtra");
                     data.Add("country", "india");
                     data.Add("zipcode", "419406");
-                    data.Add("udf1", "");
-                    data.Add("udf2", "");
-                    data.Add("udf3", "");
-                    data.Add("udf4", "");
-                    data.Add("udf5", "");
+                    data.Add("udf1", "udf1");
+                    data.Add("udf2", "udf2");
+                    data.Add("udf3", "udf3");
+                    data.Add("udf4", "udf4");
+                    data.Add("udf5", "udf5");
                     data.Add("pg", "");
                     data.Add("service_provider", "payu_paisa");
 
 
                     string strForm = PreparePOSTForm(action1, data);
+                    Response.Write(strForm);
                     // Page.Controls.Add(new LiteralControl(strForm));
                     
 
