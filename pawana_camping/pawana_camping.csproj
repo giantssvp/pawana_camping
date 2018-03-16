@@ -295,6 +295,10 @@
   <ItemGroup>
     <Content Include="Views\Shared\event_show.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\PaymentFailure.cshtml" />
+    <Content Include="Views\Home\PaymentSuccess.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

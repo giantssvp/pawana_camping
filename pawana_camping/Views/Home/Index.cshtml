@@ -441,20 +441,30 @@
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" id="adult" name="adult" required />
+                                    <input type="text" id="bk_date" name="bk_date" required />
+                                    <label>Booking Date</label>
+                                    <span></span>
+                                </div>
+                                <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
+                                    <input type="number" id="adult" name="adult" min="1" max="1000" value="1" onkeydown="return false" required />
                                     <label>Number of Adults</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" id="child" name="child" required />
+                                    <input type="number" id="child" name="child" min="0" value="0" max="1000" onkeydown="return false" required/>
                                     <label>Number of Children</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" id="total_cost" name="total_cost" readonly />
-                                    <label>Total Cost</label>
+                                    <input type="checkbox" id="partial_payment" name="partial_payment" />
+                                    <label>Partail Payment</label>
                                     <span></span>
                                 </div>
+                                <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
+                                    <input type="text" id="total_cost" name="total_cost"/>
+                                    <label>Total Cost</label>
+                                    <span></span>
+                                </div>                               
                                 <div class="send wow shake animated animated" data-wow-delay=".5s">
                                     <input type="submit" value="Book Now">
                                 </div>
@@ -517,7 +527,7 @@
             <div class="col-md-6 bottom-grid wow fadeInUp animated animated" data-wow-delay=".5s">
                 <h5>About Us</h5>
                 <p align="justify">
-                    Janavi Pawana Lake camping  is situated on the bank of the Pawana dam and budgeted camping for weekend plan. <br />
+                    Pawna Heritage camping  is situated on the bank of the Pawana dam and budgeted camping for weekend plan. <br />
                     Pawana Dam is 50 kms from Pune and 10 kms from Lonavala. You can see the lake water easily from this location. <br />
                     Also this place is surrounded by four major forts named Tung, Tikona, Lohagad and Visapur. Special attraction
                     of Pawana Camping is  water view site, music with dance, camp fire, BBQ and  home made dinner/ lunch.<br /><br />
@@ -540,3 +550,66 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#partial_payment').change(function () {
+            var date = 0; 
+            if($(this).prop("checked")) {
+                date = 1;
+            }
+            alert(date);
+            $.ajax({
+                type: "GET",
+                url: "/Home/calculate_amount",
+                data: {},
+                dataType: 'json',
+                success: function (d) { 
+                    var list = d.c;
+                    $('#total_cost').val(list);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#adult').change(function () {
+            var date = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "/Home/calculate_amount",
+                data: {},
+                dataType: 'json',
+                success: function (d) {
+                    var list = d.c;
+                    $('#total_cost').val(list);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#child').change(function () {
+            var date = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "/Home/calculate_amount",
+                data: {},
+                dataType: 'json',
+                success: function (d) {
+                    var list = d.c;
+                    $('#total_cost').val(list);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+            });
+        });
+    });
+</script>

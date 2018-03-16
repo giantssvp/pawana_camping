@@ -2,8 +2,77 @@
 @{
     ViewBag.Title = "PaymentSucess";
 }
+
+@{
+    var name = ViewBag.name;
+    var status = ViewBag.status;
+    var email = ViewBag.email;
+    var phone = ViewBag.phone;
+    var tid = ViewBag.tid;
+    var tr_amt = ViewBag.tr_amt;
+    var tr_date_time = ViewBag.tr_date_time;
+    var bk_date_time = ViewBag.bk_date_time;
+    var adults = ViewBag.adults;
+    var children = ViewBag.children;
+    var prod_info = ViewBag.prod_info;
+    }
 @Html.Partial("menu1")
 
 
-<h2>PaymentSucess</h2>
-
+<hr class="bs-docs-separator">
+<div class="bs-docs-example" >
+    <table class="table table-striped" align="center" style="width:50%">
+        <thead>
+            <tr>
+                <th colspan="2" class="text-center">Transaction Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Transaction Status</td>
+                <td>@status</td>
+            </tr>
+            <tr> 
+                <td>Name</td>
+                <td>@name</td>                        
+            </tr>
+            <tr>
+                <td>Email ID</td>
+                <td>@email</td>
+            </tr>
+            <tr>
+                <td>Transaction ID</td>
+                <td>@tid</td>
+            </tr>
+            <tr>
+                <td>Transaction Date and Time</td>
+                <td>@tr_date_time</td>
+            </tr>
+            <tr>
+                <td>Transaction Amount</td>
+                <td>@tr_amt</td>
+            </tr>
+            <tr>
+                <td>Prodcut Info</td>
+                <td>@prod_info</td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>@phone</td>
+            </tr>
+            <tr>
+                <td>No of Adults</td>
+                <td>@adults</td>
+            </tr>
+            <tr>
+                <td>No of Children</td>
+                <td>@children</td>
+            </tr>
+            <tr>
+                <td>Booking Date</td>
+                <td>@bk_date_time</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+		
