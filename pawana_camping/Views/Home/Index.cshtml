@@ -457,7 +457,7 @@
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
                                     <input type="checkbox" id="partial_payment" name="partial_payment" />
-                                    <label>Partail Payment</label>
+                                    <label>Partial Payment</label>
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
@@ -554,15 +554,21 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#partial_payment').change(function () {
-            var date = 0; 
+            var part_pay = 0; 
             if($(this).prop("checked")) {
-                date = 1;
+                part_pay = 1;
             }
-            alert(date);
+            
+            var data = JSON.stringify({
+                'adult': $('#adult').val(),
+                'child': $('#child').val(),
+                'part_pay': part_pay
+            });
+
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/Home/calculate_amount",
-                data: {},
+                data: data,
                 dataType: 'json',
                 success: function (d) { 
                     var list = d.c;
@@ -571,17 +577,27 @@
                 error: function (err) {
                     alert(err.responseText);
                 },
+                contentType: 'application/json'
             });
         });
     });
 
     $(document).ready(function () {
         $('#adult').change(function () {
-            var date = $(this).val();
+            var part_pay = 0;
+            if ($('#partial_payment').prop("checked")) {
+                part_pay = 1;
+            }
+            var data = JSON.stringify({
+                'adult': $('#adult').val(),
+                'child': $('#child').val(),
+                'part_pay': part_pay
+            });
+                        
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/Home/calculate_amount",
-                data: {},
+                data: data,
                 dataType: 'json',
                 success: function (d) {
                     var list = d.c;
@@ -590,17 +606,27 @@
                 error: function (err) {
                     alert(err.responseText);
                 },
+                contentType: 'application/json'
             });
         });
     });
 
     $(document).ready(function () {
         $('#child').change(function () {
-            var date = $(this).val();
+            var part_pay = 0;
+            if ($('#partial_payment').prop("checked")) {
+                part_pay = 1;
+            }
+            var data = JSON.stringify({
+                'adult': $('#adult').val(),
+                'child': $('#child').val(),
+                'part_pay': part_pay
+            });
+
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "/Home/calculate_amount",
-                data: {},
+                data: data,
                 dataType: 'json',
                 success: function (d) {
                     var list = d.c;
@@ -609,7 +635,23 @@
                 error: function (err) {
                     alert(err.responseText);
                 },
+                contentType: 'application/json'
             });
+        });
+    });
+</script>
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+
+<script type="text/javascript">
+    var j = jQuery.noConflict();
+
+    j(function () {
+        j('#bk_date').datepicker({
+             minDate: new Date()
         });
     });
 </script>

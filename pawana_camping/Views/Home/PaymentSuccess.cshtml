@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "PaymentSucess";
 }
 
@@ -15,7 +14,12 @@
     var adults = ViewBag.adults;
     var children = ViewBag.children;
     var prod_info = ViewBag.prod_info;
+    var part_pay = "NO";
+    if (ViewBag.part_payment == "1")
+    {
+        part_pay = "YES";
     }
+}
 @Html.Partial("menu1")
 
 
@@ -72,7 +76,10 @@
                 <td>Booking Date</td>
                 <td>@bk_date_time</td>
             </tr>
+            <tr>
+                <td>Partial Payment</td>
+                <td>@part_pay</td>
+            </tr>
         </tbody>
     </table>
-</div>
-		
+</div>		

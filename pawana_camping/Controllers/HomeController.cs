@@ -79,7 +79,6 @@ namespace pawana_camping.Controllers
         {
             try
             {
-
                 string[] merc_hash_vars_seq;
                 string merc_hash_string = string.Empty;
                 string merc_hash = string.Empty;
@@ -88,7 +87,6 @@ namespace pawana_camping.Controllers
 
                 if (Request.Form["status"] == "success")
                 {
-
                     merc_hash_vars_seq = hash_seq.Split('|');
                     Array.Reverse(merc_hash_vars_seq);
                     merc_hash_string = ConfigurationManager.AppSettings["SALT"] + "|" + Request.Form["status"];
@@ -97,25 +95,18 @@ namespace pawana_camping.Controllers
                     {
                         merc_hash_string += "|";
                         merc_hash_string = merc_hash_string + (Request.Form[merc_hash_var] != null ? Request.Form[merc_hash_var] : "");
-
                     }
                     //Response.Write(merc_hash_string); //exit;
                     merc_hash = Generatehash512(merc_hash_string).ToLower();
-
-
-
+                    
                     if (merc_hash != Request.Form["hash"])
                     {
-                        Response.Write("Hash value did not matched");
-
+                        //Response.Write("Hash value did not matched");
+                        order_id = Request.Form["txnid"];
                     }
                     else
                     {
                         order_id = Request.Form["txnid"];
-
-                        Response.Write("value matched");
-
-                        //Hash value did not matched
                     }
 
                     ViewBag.name = Request.Form["firstname"];
@@ -129,27 +120,85 @@ namespace pawana_camping.Controllers
                     ViewBag.adults = Request.Form["udf3"];
                     ViewBag.children = Request.Form["udf4"];
                     ViewBag.prod_info = Request.Form["productinfo"];
-                }
+                    ViewBag.part_payment = Request.Form["udf5"];
 
+                    var obj = new db_connect();
+                    obj.Insert_Booking(ViewBag.tid, ViewBag.status, ViewBag.tr_date_time, ViewBag.prod_info,
+                    ViewBag.name, ViewBag.email, ViewBag.phone, ViewBag.bk_date_time, Int32.Parse(ViewBag.adults), Int32.Parse(ViewBag.children),
+                                      Int32.Parse(ViewBag.part_payment), (int)(Convert.ToDouble(ViewBag.tr_amt)));
+                }
                 else
                 {
-                    Response.Write("Hash value did not matched");
+                    //Response.Write("Hash value did not matched");
                     // osc_redirect(osc_href_link(FILENAME_CHECKOUT, 'payment' , 'SSL', null, null,true));
                 }
+                                
                 return View();
             }
-
             catch (Exception ex)
             {
                 Response.Write("<span style='color:red'>" + ex.Message + "</span>");
                 return View();
             }
-
         }
 
         public ActionResult PaymentFailure()
         {
-            return View();
+            try
+            {
+                string[] merc_hash_vars_seq;
+                string merc_hash_string = string.Empty;
+                string merc_hash = string.Empty;
+                string order_id = string.Empty;
+                string hash_seq = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+
+                merc_hash_vars_seq = hash_seq.Split('|');
+                Array.Reverse(merc_hash_vars_seq);
+                merc_hash_string = ConfigurationManager.AppSettings["SALT"] + "|" + Request.Form["status"];
+
+                foreach (string merc_hash_var in merc_hash_vars_seq)
+                {
+                    merc_hash_string += "|";
+                    merc_hash_string = merc_hash_string + (Request.Form[merc_hash_var] != null ? Request.Form[merc_hash_var] : "");
+                }
+                //Response.Write(merc_hash_string); //exit;
+                merc_hash = Generatehash512(merc_hash_string).ToLower();
+
+                if (merc_hash != Request.Form["hash"])
+                {
+                    //Response.Write("Hash value did not matched");
+                    order_id = Request.Form["txnid"];
+                }
+                else
+                {
+                    order_id = Request.Form["txnid"];
+                }
+
+                ViewBag.name = Request.Form["firstname"];
+                ViewBag.status = Request.Form["status"];
+                ViewBag.email = Request.Form["email"];
+                ViewBag.phone = Request.Form["phone"];
+                ViewBag.tid = Request.Form["txnid"];
+                ViewBag.tr_amt = Request.Form["amount"];
+                ViewBag.tr_date_time = Request.Form["udf1"];
+                ViewBag.bk_date_time = Request.Form["udf2"];
+                ViewBag.adults = Request.Form["udf3"];
+                ViewBag.children = Request.Form["udf4"];
+                ViewBag.prod_info = Request.Form["productinfo"];
+                ViewBag.part_payment = Request.Form["udf5"];
+
+                var obj = new db_connect();
+                obj.Insert_Booking(ViewBag.tid, ViewBag.status, ViewBag.tr_date_time, ViewBag.prod_info,
+                ViewBag.name, ViewBag.email, ViewBag.phone, ViewBag.bk_date_time, Int32.Parse(ViewBag.adults), Int32.Parse(ViewBag.children),
+                                    Int32.Parse(ViewBag.part_payment), (int)(Convert.ToDouble(ViewBag.tr_amt)));
+            
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<span style='color:red'>" + ex.Message + "</span>");
+                return View();
+            }
         }
 
         public ActionResult login_btn(string username, string password)
@@ -333,10 +382,15 @@ namespace pawana_camping.Controllers
         public string txnid1 = string.Empty;
         //private object exit;
 
-        public void PayNow(string name, string email, string phone, string total_cost, string bk_date, string adult, string child)
+        public void PayNow(string name, string email, string phone, string total_cost, string bk_date, string adult, string child, string partial_payment)
         {
             try
             {
+                string part_payment = "0";
+                if (partial_payment == "on")
+                {
+                    part_payment = "1";
+                }                
                 string[] hashVarsSeq;
                 string hash_string = string.Empty;
 
@@ -396,7 +450,7 @@ namespace pawana_camping.Controllers
                     }
                     else if (hash_var == "udf5")
                     {
-                        hash_string = hash_string + "udf5";
+                        hash_string = hash_string + part_payment;
                         hash_string = hash_string + '|';
                     }
                     else
@@ -436,7 +490,7 @@ namespace pawana_camping.Controllers
                     data.Add("udf2", bk_date);
                     data.Add("udf3", adult);
                     data.Add("udf4", child);
-                    data.Add("udf5", "udf5");
+                    data.Add("udf5", part_payment);
                     data.Add("pg", "");
                     data.Add("service_provider", "payu_paisa");
                     string strForm = PreparePOSTForm(action1, data);
@@ -499,10 +553,21 @@ namespace pawana_camping.Controllers
             return hex;
         }
 
-        public ActionResult calculate_amount()
+        public ActionResult calculate_amount(string adult, string child, string part_pay)
         {
-            MessageBox.Show("in checkbox");
-            List<int> c = new List<int> { 10};
+            var obj = new db_connect();
+            int base_adult = obj.get_rates("adult");
+            int base_child = obj.get_rates("child");
+            double total_cost = 0;
+            if(Int32.Parse(part_pay) == 1)
+            {
+                total_cost = (((Int32.Parse(adult) * base_adult) + (Int32.Parse(child) * base_child)) * 0.5);
+            }
+            else
+            {
+                total_cost = ((Int32.Parse(adult) * base_adult) + (Int32.Parse(child) * base_child));
+            }
+            List<int> c = new List<int> {(int)(total_cost)};
             return Json(new { c=c},JsonRequestBehavior.AllowGet);
         }
     }

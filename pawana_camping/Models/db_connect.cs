@@ -13,7 +13,6 @@ namespace pawana_camping.Models
         public List<string>[] list_feedback_show = new List<string>[3];
         public List<string>[] list_time_show = new List<string>[1];
         public List<string>[] list_gallery_show = new List<string>[2];
-
         public List<string>[] list_events_show = new List<string>[3];
 
         private bool OpenConnection()
@@ -78,21 +77,21 @@ namespace pawana_camping.Models
             }
         }
 
-        public int Insert_Booking(string name_booking, string email_booking, string phone, string start_time, string session_type, string date)
+        public int Insert_Booking(string transaction_id, string transaction_status, string transaction_date, string product_info,
+                                  string name, string email, string phone, string booking_date, int adult, int children,
+                                  int part_payment, int paid_amount)
         {
             try
             {
-                string query = "INSERT INTO booking (Name, Email, Phone, Start_time, Session_type, Date) VALUES(@name, @email, @phone, @time, @session, @dt)";
+                int total_amount = ((adult * get_rates("adult")) + (children * get_rates("child")));
+                string query = "INSERT INTO booking_details (transaction_id, transaction_status, transaction_date, product_info," + 
+                                  "name, email, phone, booking_date, adults, children, total_amount, part_payment, paid_amount)VALUES(\"" + 
+                                  transaction_id + "\",\"" + transaction_status + "\",\"" + transaction_date + "\",\"" + product_info + "\",\"" + name + "\",\"" + email + "\",\"" + phone + "\",\"" +
+                                  booking_date + "\"," + adult + "," + children + "," + total_amount + "," + part_payment + "," + paid_amount + ")";
 
                 if (this.OpenConnection() == true)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@name", name_booking);
-                    cmd.Parameters.AddWithValue("@email", email_booking);
-                    cmd.Parameters.AddWithValue("@phone", phone);
-                    cmd.Parameters.AddWithValue("@time", start_time);
-                    cmd.Parameters.AddWithValue("@session", session_type);
-                    cmd.Parameters.AddWithValue("@dt", date);
                     cmd.ExecuteNonQuery();
 
                     this.CloseConnection();
@@ -227,6 +226,26 @@ namespace pawana_camping.Models
             {
                 int count = 0;
                 string query = "select count(id) from pawna_camping.events";
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    count = Convert.ToInt32(cmd.ExecuteScalar());
+                    this.CloseConnection();
+                }
+                return count;
+            }
+            catch (MySqlException ex)
+            {
+                return 0;
+            }
+        }
+
+        public int get_rates(string age_grp)
+        {
+            try
+            {
+                int count = 0;
+                string query = "select amount from pawna_camping.rates where age_group = \"" + age_grp + "\"";
                 if (this.OpenConnection() == true)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, connection);

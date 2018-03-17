@@ -5,3 +5,27 @@
     PRIMARY KEY (ID)
 );
 
+CREATE TABLE pawna_camping.rates (
+    ID int NOT NULL AUTO_INCREMENT,
+    age_group varchar(255),
+    amount int,
+    PRIMARY KEY (ID)
+);
+
+CREATE TABLE pawna_camping.booking_details (
+    ID int NOT NULL AUTO_INCREMENT,
+    transaction_id varchar(255),
+    transaction_status varchar(255),
+    transaction_date varchar(255),
+    product_info varchar(255),
+    name varchar(255),
+    email varchar(255),
+    phone varchar(255),
+    booking_date varchar(255),
+    adults int,
+    children int,
+    total_cost int,
+    part_payment int,
+    amount int,
+    PRIMARY KEY (ID)
+);
