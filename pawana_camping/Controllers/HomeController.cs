@@ -7,7 +7,7 @@ using pawana_camping.Models;
 using System.Windows.Forms;
 using System.Configuration;
 using System.Text;
-
+using System.Net.Mail;
 
 using System.Web.Security;
 using System.Web.UI.WebControls;
@@ -17,20 +17,19 @@ using System.Security.Cryptography;
 using System.Net;
 using System.IO;
 
-
 namespace pawana_camping.Controllers
 {
     public class HomeController : Controller
     {
-        private int offset = 0;
+        public int event_page_size = 10;
+        public int booking_page_size = 10;
 
         public ActionResult Index()
         {
-            HttpContext.Session.Add("offset", 0);
-
+            HttpContext.Session.Add("offset_event", 0);
             var obj = new db_connect();
             List<string>[] list = new List<string>[3];
-            list = obj.events_show(offset);
+            list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), 3);
             ViewBag.list = list;
             ViewBag.total = list[0].Count();
 
@@ -47,13 +46,30 @@ namespace pawana_camping.Controllers
             return View();
         }
 
+        [Authorize]
+        public ActionResult Dashboard()
+        {
+            var obj = new db_connect();
+            List<string>[] list = new List<string>[14];
+            list = obj.bookings_show(0, booking_page_size);
+            ViewBag.list = list;            
+            ViewBag.total = list[0].Count();
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult ChangeRate()
+        {
+            return View();
+        }
+
         public ActionResult Events()
         {
-            HttpContext.Session.Add("offset", 0);
+            HttpContext.Session.Add("offset_event", 0);
 
             var obj = new db_connect();
             List<string>[] list = new List<string>[3];
-            list = obj.events_show(offset);
+            list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
             ViewBag.list = list;
             ViewBag.total = list[0].Count();
 
@@ -70,9 +86,42 @@ namespace pawana_camping.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(Models.User user)
+        {
+            if (ModelState.IsValid)
+            {
+                if (user.IsValid(user.UserName, user.Password))
+                {
+                    FormsAuthentication.SetAuthCookie(user.UserName, user.RememberMe);
+                    return RedirectToAction("Dashboard", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Login data is incorrect!");
+                    return RedirectToAction("Login", "Home");
+                }
+            }
+            return View(user);            
+        }
+
+        [Authorize]
+        public ActionResult Eventfeed()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "Home");
         }
 
         public ActionResult PaymentSuccess()
@@ -200,50 +249,19 @@ namespace pawana_camping.Controllers
                 return View();
             }
         }
-
-        public ActionResult login_btn(string username, string password)
+        
+        public ActionResult UpdateNow(string base_adult, string base_child)
         {
             try
             {
                 var obj = new db_connect();
-
-                if (obj.Login(username, password))
-                {
-                    TempData["AlertMessage"] = "Logged in successfully";
-                    HttpContext.Session.Add("user", 1);
-                    return RedirectToAction("Eventfeed", "Home");
-                }
-                else
-                {
-                    TempData["AlertMessage"] = "Your username or password is not correct";
-                    HttpContext.Session.Add("user", 0);
-                    return RedirectToAction("Login", "Home");
-                }
-
+                obj.update_rates(base_adult, base_child);
+                return RedirectToAction("ChangeRate", "Home");
             }
             catch (Exception ex)
             {
-                HttpContext.Session.Add("user", 0);
                 System.Web.HttpContext.Current.Response.Write("<script>alert('There is some issue while saving the details, please try again, Thanks.')</script>");
-                return RedirectToAction("Login", "Home");
-            }
-        }
-
-        public ActionResult Eventfeed()
-        {
-            try
-            {
-                string session_status = HttpContext.Session["user"].ToString();
-                if (Int32.Parse(session_status) == 0)
-                    return RedirectToAction("Login", "Home");
-                else
-                    return View();
-            }
-            catch (Exception ex)
-            {
-                HttpContext.Session.Add("user", 0);
-                System.Web.HttpContext.Current.Response.Write("<script>alert('There is some issue while saving the details, please try again, Thanks.')</script>");
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("ChangeRate", "Home");
             }
         }
 
@@ -262,80 +280,13 @@ namespace pawana_camping.Controllers
             }
         }
 
-        public ActionResult logout_btn(string heading, string description)
-        {
-            try
-            {
-                HttpContext.Session.Add("user", 0);
-                System.Web.HttpContext.Current.Response.Write("<script>alert('There is some issue while saving the details, please try again, Thanks.')</script>");
-                return RedirectToAction("Login", "Home");
-            }
-            catch (Exception ex)
-            {
-                System.Web.HttpContext.Current.Response.Write("<script>alert('There is some issue while saving the details, please try again, Thanks.')</script>");
-                return RedirectToAction("Login", "Home");
-            }
-        }
-
-        public ActionResult first_btn()
+        public ActionResult F_Events()
         {
             try
             {
                 var obj = new db_connect();
                 List<string>[] list = new List<string>[3];
-                list = obj.events_show(0);
-                ViewBag.list = list;
-                ViewBag.total = list[0].Count();
-
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-        }
-
-        public ActionResult previous_btn()
-        {
-            try
-            {
-                if (offset <= 1)
-                {
-                    offset = 0;
-                }
-                else
-                {
-                    offset = offset - 2;
-                }
-
-                var obj = new db_connect();
-                List<string>[] list = new List<string>[3];
-                list = obj.events_show(offset);
-                ViewBag.list = list;
-                ViewBag.total = list[0].Count();
-
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-        }
-
-        public ActionResult next_btn()
-        {
-            try
-            {
-                var obj = new db_connect();
-                int cnt = obj.event_count();
-                offset = offset + 2;
-                if (offset > cnt)
-                {
-                    offset = cnt - 2;
-                }
-                offset = 2;
-                List<string>[] list = new List<string>[3];
-                list = obj.events_show(1);
+                list = obj.events_show(0, event_page_size);
                 ViewBag.list = list;
                 ViewBag.total = list[0].Count();
 
@@ -343,37 +294,183 @@ namespace pawana_camping.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                return View("Events");
             }
         }
 
-        public ActionResult last_btn()
+        public ActionResult P_Events()
         {
             try
             {
-                offset = offset + 2;
-                var obj = new db_connect();
-                int cnt = obj.event_count();
-                if (cnt != 0)
+                HttpContext.Session.Add("offset_event", (Int32.Parse(HttpContext.Session["offset_event"].ToString()) - event_page_size));
+                if (Int32.Parse(HttpContext.Session["offset_event"].ToString()) <= (event_page_size-1))
                 {
-                    if (cnt > 0)
-                    {
-                        if (cnt % 2 == 0)
-                            offset = cnt - 2;
-                        else
-                            offset = cnt - 1;
-                    }
+                    HttpContext.Session.Add("offset_event", 0);
                 }
+
+                var obj = new db_connect();
                 List<string>[] list = new List<string>[3];
-                list = obj.events_show(offset);
+                list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
                 ViewBag.list = list;
                 ViewBag.total = list[0].Count();
 
-                return RedirectToAction("Index", "Home");
+                return View("Events");
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Home");
+                return View("Events");
+            }
+        }
+
+        public ActionResult N_Events()
+        {
+            try
+            {
+                var obj = new db_connect();
+                int cnt = obj.event_count();
+                HttpContext.Session.Add("offset_event", (Int32.Parse(HttpContext.Session["offset_event"].ToString()) + event_page_size));
+                if (Int32.Parse(HttpContext.Session["offset_event"].ToString()) > cnt)
+                {
+                    HttpContext.Session.Add("offset_event", (cnt - (cnt % event_page_size)));
+                }
+                List<string>[] list = new List<string>[3];
+                list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Events");
+            }
+            catch (Exception ex)
+            {
+                return View("Events");
+            }
+        }
+
+        public ActionResult L_Events()
+        {
+            try
+            {
+                var obj = new db_connect();
+                int cnt = obj.event_count();
+                if (cnt > 0)
+                {
+                    if (cnt % event_page_size == 0)
+                    {
+                        HttpContext.Session.Add("offset_event", (cnt - event_page_size));
+                    }
+                    else
+                    {
+                        HttpContext.Session.Add("offset_event", (cnt - (cnt % event_page_size)));
+                    }                    
+                }
+                
+                List<string>[] list = new List<string>[3];
+                list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Events");
+            }
+            catch (Exception ex)
+            {
+                return View("Events");
+            }
+        }
+
+        public ActionResult F_Booking()
+        {
+            try
+            {
+                var obj = new db_connect();
+                List<string>[] list = new List<string>[14];
+                list = obj.bookings_show(0, booking_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Dashboard");
+            }
+            catch (Exception ex)
+            {
+                return View("Dashboard");
+            }
+        }
+
+        public ActionResult P_Booking()
+        {
+            try
+            {
+                HttpContext.Session.Add("offset_booking", (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) - booking_page_size));
+                if (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) <= (booking_page_size - 1))
+                {
+                    HttpContext.Session.Add("offset_booking", 0);
+                }
+
+                var obj = new db_connect();
+                List<string>[] list = new List<string>[14];
+                list = obj.bookings_show(Int32.Parse(HttpContext.Session["offset_booking"].ToString()), booking_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Dashboard");
+            }
+            catch (Exception ex)
+            {
+                return View("Dashboard");
+            }
+        }
+
+        public ActionResult N_Booking()
+        {
+            try
+            {
+                var obj = new db_connect();
+                int cnt = obj.booking_count();
+                HttpContext.Session.Add("offset_booking", (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) + booking_page_size));
+                if (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) > cnt)
+                {
+                    HttpContext.Session.Add("offset_booking", (cnt - (cnt % booking_page_size)));
+                }
+                List<string>[] list = new List<string>[14];
+                list = obj.bookings_show(Int32.Parse(HttpContext.Session["offset_booking"].ToString()), booking_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Dashboard");
+            }
+            catch (Exception ex)
+            {
+                return View("Dashboard");
+            }
+        }
+
+        public ActionResult L_Booking()
+        {
+            try
+            {
+                var obj = new db_connect();
+                int cnt = obj.booking_count();
+                if (cnt > 0)
+                {
+                    if (cnt % booking_page_size == 0)
+                    {
+                        HttpContext.Session.Add("offset_booking", (cnt - booking_page_size));
+                    }
+                    else
+                    {
+                        HttpContext.Session.Add("offset_booking", (cnt - (cnt % booking_page_size)));
+                    }
+                }
+
+                List<string>[] list = new List<string>[14];
+                list = obj.bookings_show(Int32.Parse(HttpContext.Session["offset_booking"].ToString()), booking_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Dashboard");
+            }
+            catch (Exception ex)
+            {
+                return View("Dashboard");
             }
         }
 

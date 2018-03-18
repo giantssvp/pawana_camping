@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+@{
+    var results = ViewBag.list;
+    int cnt = ViewBag.total;
+}
+
+@Html.Partial("menu1")
+
+<div class="grid_3 grid_5 wow fadeInLeft animated" data-wow-delay=".5s">
+    <br /><br />
+    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="@Url.Action("Dashboard","Home")" id="home-tab" role="tab">Booking Details</a>
+            </li>
+            <li role="presentation">
+                <a href="@Url.Action("ChangeRate","Home")" role="tab" id="profile-tab">Change Rates</a>
+            </li>
+            <li role="presentation">
+                <a href="@Url.Action("Eventfeed","Home")" role="tab" id="myTabDrop1-contents">Add Events</a>
+            </li>
+            <li><a href='@Url.Action("Logout", "Home")' id="home-tab" role="tab">Logout</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">            
+            <hr class="bs-docs-separator">
+            <div class="bs-docs-example">
+                <table class="table table-striped" align="center" style="width:50%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Transaction ID</th>
+                            <th>Transaction Status</th>
+                            <th>Transaction Date and Time</th>
+                            <th>Prodcut Info</th>
+                            <th>Name</th>
+                            <th>Email ID</th>
+                            <th>Phone</th>
+                            <th>Booking Date</th>
+                            <th>No of Adults</th>
+                            <th>No of Children</th>
+                            <th>Total Amount</th>
+                            <th>Partial Payment</th>
+                            <th>Paid Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < cnt; i++)
+                        {
+                            <tr>                            
+                                <td>@results[0][i]</td>
+                                <td>@results[1][i]</td>
+                                <td>@results[2][i]</td>
+                                <td>@results[3][i]</td>
+                                <td>@results[4][i]</td>
+                                <td>@results[5][i]</td>
+                                <td>@results[6][i]</td>
+                                <td>@results[7][i]</td>
+                                <td>@results[8][i]</td>
+                                <td>@results[9][i]</td>
+                                <td>@results[10][i]</td>
+                                <td>@results[11][i]</td>
+                                <td>@results[12][i]</td>
+                                <td>@results[13][i]</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid_3 grid_5 wow fadeInRight animated" data-wow-delay=".5s" align="center">
+    <nav>
+        <ul class="pagination pagination-lg">
+            <li><a href="@Url.Action("F_Booking", "Home")" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
+            <li><a href="@Url.Action("P_Booking", "Home")"><</a></li>
+            <li><a href="@Url.Action("N_Booking", "Home")">></a></li>
+            <li><a href="@Url.Action("L_Booking", "Home")" aria-label="Next"><span aria-hidden="true">>></span></a></li>
+        </ul>
+    </nav>
+    <div class="clearfix"> </div>
+</div>

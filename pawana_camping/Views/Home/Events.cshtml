@@ -15,17 +15,14 @@
     <span>@results[2][i]</span>
 }
 
-<div class="send wow shake animated animated" data-wow-delay=".5s">
-    <form method="post" action=@Url.Action("first_btn", "Home")>
-        <input type="submit" id="first" value="<<" style="width:50px">
-    </form>
-    <form method="post" action=@Url.Action("previous_btn", "Home")>
-        <input type="submit" id="previous" value="<" style="width:50px">
-    </form>
-    <form method="post" action=@Url.Action("next_btn", "Home")>
-        <input type="submit" id="next" value=">" style="width:50px">
-    </form>
-    <form method="post" action=@Url.Action("last_btn", "Home")>
-        <input type="submit" id="last" value=">>" style="width:50px">
-    </form>
+<div class="grid_3 grid_5 wow fadeInRight animated" data-wow-delay=".5s" align="center">
+    <nav>
+        <ul class="pagination pagination-lg">
+            <li><a href="@Url.Action("F_Events", "Home")" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
+            <li><a href="@Url.Action("P_Events", "Home")"><</a></li>
+            <li><a href="@Url.Action("N_Events", "Home")">></a></li>
+            <li><a href="@Url.Action("L_Events", "Home")" aria-label="Next"><span aria-hidden="true">>></span></a></li>
+        </ul>
+    </nav>
+    <div class="clearfix"> </div>
 </div>

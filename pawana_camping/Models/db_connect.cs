@@ -14,6 +14,7 @@ namespace pawana_camping.Models
         public List<string>[] list_time_show = new List<string>[1];
         public List<string>[] list_gallery_show = new List<string>[2];
         public List<string>[] list_events_show = new List<string>[3];
+        public List<string>[] list_bookings_show = new List<string>[14];
 
         private bool OpenConnection()
         {
@@ -181,11 +182,11 @@ namespace pawana_camping.Models
         }
 
         /*News Section */
-        public List<string>[] events_show(int offset)
+        public List<string>[] events_show(int offset, int limit)
         {
             try
             {
-                string query = "SELECT * FROM events ORDER BY ID DESC LIMIT 2 OFFSET @offset";
+                string query = "SELECT * FROM events ORDER BY ID DESC LIMIT @limit OFFSET @offset";
 
                 list_events_show[0] = new List<string>();
                 list_events_show[1] = new List<string>();
@@ -196,6 +197,7 @@ namespace pawana_camping.Models
                 {
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@offset", offset);
+                    cmd.Parameters.AddWithValue("@limit", limit);
                     MySqlDataReader dataReader = cmd.ExecuteReader();
 
                     while (dataReader.Read())
@@ -217,6 +219,88 @@ namespace pawana_camping.Models
             catch (MySqlException ex)
             {
                 return list_events_show;
+            }
+        }
+
+        public List<string>[] bookings_show(int offset, int limit)
+        {
+            try
+            {
+                string query = "SELECT * FROM booking_details ORDER BY ID DESC LIMIT @limit OFFSET @offset";
+
+                list_bookings_show[0] = new List<string>();
+                list_bookings_show[1] = new List<string>();
+                list_bookings_show[2] = new List<string>();
+                list_bookings_show[3] = new List<string>();
+                list_bookings_show[4] = new List<string>();
+                list_bookings_show[5] = new List<string>();
+                list_bookings_show[6] = new List<string>();
+                list_bookings_show[7] = new List<string>();
+                list_bookings_show[8] = new List<string>();
+                list_bookings_show[9] = new List<string>();
+                list_bookings_show[10] = new List<string>();
+                list_bookings_show[11] = new List<string>();
+                list_bookings_show[12] = new List<string>();
+                list_bookings_show[13] = new List<string>();
+
+
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@offset", offset);
+                    cmd.Parameters.AddWithValue("@limit", limit);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                    while (dataReader.Read())
+                    {
+                        list_bookings_show[0].Add(dataReader["ID"] + "");
+                        list_bookings_show[1].Add(dataReader["transaction_id"] + "");
+                        list_bookings_show[2].Add(dataReader["transaction_status"] + "");
+                        list_bookings_show[3].Add(dataReader["transaction_date"] + "");
+                        list_bookings_show[4].Add(dataReader["product_info"] + "");
+                        list_bookings_show[5].Add(dataReader["name"] + "");
+                        list_bookings_show[6].Add(dataReader["email"] + "");
+                        list_bookings_show[7].Add(dataReader["phone"] + "");
+                        list_bookings_show[8].Add(dataReader["booking_date"] + "");
+                        list_bookings_show[9].Add(dataReader["adults"] + "");
+                        list_bookings_show[10].Add(dataReader["children"] + "");
+                        list_bookings_show[11].Add(dataReader["total_amount"] + "");
+                        list_bookings_show[12].Add(dataReader["part_payment"] + "");
+                        list_bookings_show[13].Add(dataReader["paid_amount"] + "");
+                    }
+
+                    dataReader.Close();
+                    this.CloseConnection();
+                    return list_bookings_show;
+                }
+                else
+                {
+                    return list_bookings_show;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                return list_bookings_show;
+            }
+        }
+
+        public int booking_count()
+        {
+            try
+            {
+                int count = 0;
+                string query = "select count(id) from pawna_camping.booking_details";
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    count = Convert.ToInt32(cmd.ExecuteScalar());
+                    this.CloseConnection();
+                }
+                return count;
+            }
+            catch (MySqlException ex)
+            {
+                return 0;
             }
         }
 
@@ -257,6 +341,34 @@ namespace pawana_camping.Models
             catch (MySqlException ex)
             {
                 return 0;
+            }
+        }
+        
+        public int update_rates(string base_adult, string base_child)
+        {
+            try
+            {
+                int id = -1;
+                string query1 = "UPDATE rates SET amount=@base_adult WHERE age_group=\"adult\"";
+                string query2 = "UPDATE rates SET amount=@base_child WHERE age_group=\"child\"";
+
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(query1, connection);
+                    cmd.Parameters.AddWithValue("@base_adult", Int32.Parse(base_adult));
+                    MySqlCommand cmd1 = new MySqlCommand(query2, connection);
+                    cmd1.Parameters.AddWithValue("@base_child", Int32.Parse(base_child));
+
+                    cmd.ExecuteNonQuery();
+                    cmd1.ExecuteNonQuery();
+
+                    this.CloseConnection();
+                }
+                return id;
+            }
+            catch (MySqlException ex)
+            {
+                return -1;
             }
         }
 

@@ -21,7 +21,11 @@
 </head>
 
 <body>
-    <form method="post" action=@Url.Action("login_btn", "Home")>
+    <!--<form method="post" action=@Url.Action("login_btn", "Home")>-->
+    @model pawana_camping.Models.User
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true, "Login Failed. Check your login details");
         <div class="container">
             <div class="login-box animated fadeInUp">
                 <div class="box-header">
@@ -29,18 +33,23 @@
                 </div>
                 <label for="username">Username <span style="color:red;">*</span></label>
                 <br />
-                <input type="text" name="username" id="username" required />
+                <!--<input type="text" name="username" id="username" required />-->
+                @Html.TextBoxFor(u => u.UserName)
+                @Html.ValidationMessageFor(u => u.UserName)
                 <br />
                 <label for="password">Password <span style="color:red;">*</span></label>
                 <br />
-                <input type="password" name="password" id="password" required />
+                <!--<input type="password" name="password" id="password" required />-->
+                @Html.PasswordFor(u => u.Password)
+                @Html.ValidationMessageFor(u => u.Password)
                 <br />
                 <button type="submit" id="login_button" value="">Sign In</button>
                 <br />
                 <asp:Label ID="lblLogin" ForeColor="Red" />
             </div>
         </div>
-    </form>
+    }
+    <!--</form>-->
 </body>
 
 <script>

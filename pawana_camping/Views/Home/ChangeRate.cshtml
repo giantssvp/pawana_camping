@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "ChangeRate";
+}
+
+@Html.Partial("menu1")
+
+<div class="grid_3 grid_5 wow fadeInLeft animated" data-wow-delay=".5s">
+    <br /><br />
+    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs" role="tablist">
+            <li role="presentation">
+                <a href="@Url.Action("Dashboard","Home")" id="home-tab" role="tab">Booking Details</a>
+            </li>
+            <li role="presentation" class="active">
+                <a href="@Url.Action("ChangeRate","Home")" role="tab" id="profile-tab">Change Rates</a>
+            </li>
+            <li role="presentation">
+                <a href="@Url.Action("Eventfeed","Home")" role="tab" id="myTabDrop1-contents">Add Events</a>
+            </li>
+            <li><a href='@Url.Action("Logout", "Home")' id="home-tab" role="tab">Logout</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div id="myTabContent" class="tab-content">
+                <div class="sp-testimonials">
+                    <div class="sp">
+                        <div class="col-md-6 pic wow fadeInRight animated animated" data-wow-delay=".5s">
+                            <div class="styled-input wide wow animated animated" data-wow-delay=".5s">
+                                <h3>Update Base price for Adult or children</h3>
+                                <span></span>
+                            </div>
+                            <form method="post" action=@Url.Action("UpdateNow","Home")>
+                                <div class="styled-input wide" data-wow-delay=".5s">
+                                    <input type="number" id="base_adult" name="base_adult" min="1000" max="100000" value="1500" required />
+                                    <label>Base Price for Adults</label>
+                                    <span></span>
+                                </div>
+                                <div class="styled-input wide" data-wow-delay=".5s">
+                                    <input type="number" id="base_child" name="base_child" min="500" value="1000" max="100000" required />
+                                    <label>Base Price for Children</label>
+                                    <span></span>
+                                </div>
+                                <div class="send wow shake animated animated" data-wow-delay=".5s">
+                                    <input type="submit" value="Update Now">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
