@@ -42,10 +42,10 @@ ul.side_nav li {
 	padding: 0;
 	color: #f9f1e9;
 	text-align: center;
-	top: 77%;
-	left: 48%;
-	-webkit-transform: translate3d(-77%,-48%,0);
-	transform: translate3d(-55%,-48%,0);
+	top: 25%;
+	left: 5%;
+	-webkit-transform: translate3d(-25%,-5%,0);
+	transform: translate3d(-25%,-5%,0);
 }
 
 .demo-1 .main-title, 

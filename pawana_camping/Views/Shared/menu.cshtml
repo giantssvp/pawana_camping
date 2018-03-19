@@ -1,4 +1,12 @@
-﻿<div class="container demo-2" id="home">
+﻿<script type="text/javascript">
+$(document).ready(function(){
+    $('[tooltip-glyph="glyph-tooltip-demo"]').tooltip({
+        placement : 'top'
+    });
+});
+</script>
+
+<div class="container demo-2" id="home">
     <!--carbonads-container-->
 
     <div class="content">
@@ -27,6 +35,17 @@
         </div>
         <div id="large-header" class="large-header">            
             <canvas id="demo-canvas"></canvas>
+            <h1 class="main-title"><a class="link link--takiri" href="">
+                <i class="fa fa-file-image-o" style="font-size:48px;color:#9900cc" tooltip-glyph="glyph-tooltip-demo" data-original-title="View th gallery"></i>
+                <br/>
+                <i class="fa fa fa-calendar-check-o" style="font-size:48px;color:#000080"  tooltip-glyph="glyph-tooltip-demo" data-original-title="Upcoming Events"></i>
+                <br />
+                <i class="fa fa-comment" style="font-size:48px;color:#33cc33" tooltip-glyph="glyph-tooltip-demo" data-original-title="Please leave your comment/feedback"></i>
+                <br />
+                <i class="fa fa-ticket" style="font-size:48px;color:#ffff33" tooltip-glyph="glyph-tooltip-demo" data-original-title="Click Here to book your ticket"></i>
+                <br />
+                <i class="fa fa-phone" style="font-size:48px;color:#ff3333" tooltip-glyph="glyph-tooltip-demo" data-original-title="9096325735"></i>
+                </a></h1>
         </div>
     </div>
 </div>
