@@ -86,6 +86,11 @@ namespace pawana_camping.Controllers
             return View();
         }
 
+        public ActionResult Feedback()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult Login()
         {
@@ -655,7 +660,7 @@ namespace pawana_camping.Controllers
             var obj = new db_connect();
             int base_adult = obj.get_rates("adult");
             int base_child = obj.get_rates("child");
-            double total_cost = 0;
+            double total_cost = 0;            
             if(Int32.Parse(part_pay) == 1)
             {
                 total_cost = (((Int32.Parse(adult) * base_adult) + (Int32.Parse(child) * base_child)) * 0.5);
