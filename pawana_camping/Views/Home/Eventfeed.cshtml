@@ -29,12 +29,12 @@
                         </div>
                         <form method="post" action=@Url.Action("submit_event_btn", "Home")>
                             <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
-                                <input type="text" id="heading" name="heading" required />
+                                <input type="text" id="heading" name="heading" maxlength="50" required />
                                 <label>Event Heading</label>
                                 <span></span>
                             </div>
                             <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
-                                <textarea rows="4" cols="30" id="description" name="description" required> </textarea>
+                                <textarea rows="4" cols="30" id="description" name="description" maxlength="220" required> </textarea>
                                 <label>Event Description</label>
                                 <span></span>
                             </div>
