@@ -29,3 +29,15 @@ CREATE TABLE pawna_camping.booking_details (
     amount int,
     PRIMARY KEY (ID)
 );
+
+CREATE TABLE pawna_camping.feedback (
+    ID int NOT NULL AUTO_INCREMENT,
+    name varchar(255),
+    email varchar(255),
+    phone varchar(255),
+    subject varchar(255),
+    message varchar(2048),
+    status boolean,
+    date datetime,    
+    PRIMARY KEY (ID)
+);

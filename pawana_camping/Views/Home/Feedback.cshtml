@@ -2,6 +2,81 @@
     ViewBag.Title = "Feedback";
 }
 
-
+@{
+    var results = ViewBag.list;
+    int cnt = ViewBag.total;
+}
 
 @Html.Partial("menu1")
+
+<div class="testimonials module">
+    <div class="container">
+        <!-- TITLE -->
+        <div class="test-top">
+            <div class="sp-testimonials-title">
+                <h3 class=" tittle wow fadeInUp" data-wow-delay="1s" data-wow-duration="0.5s">Feedback</h3>
+            </div>
+            <div class="sp-testimonials">
+                <div class="sp">
+                    <div class="col-md-6 pic wow fadeInLeft animated animated" data-wow-delay=".5s">
+                        @for (var i = 0; i < cnt; i++)
+                        {
+                            <blockquote>@results[1][i]</blockquote>
+                            <p><strong>@results[0][i]</strong>@results[2][i]</p>
+                            <br/><br /><br />
+                        }
+                        <div class="grid_3 grid_5 wow fadeInRight animated" data-wow-delay=".5s" align="center">
+                            <nav>
+                                <ul class="pagination pagination-lg">
+                                    <li><a href="@Url.Action("F_Feedback", "Home")" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
+                                    <li><a href="@Url.Action("P_Feedback", "Home")"><</a></li>
+                                    <li><a href="@Url.Action("N_Feedback", "Home")">></a></li>
+                                    <li><a href="@Url.Action("L_Feedback", "Home")" aria-label="Next"><span aria-hidden="true">>></span></a></li>
+                                </ul>
+                            </nav>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 pic wow fadeInRight animated animated" data-wow-delay=".5s">
+                        
+                        <form method="post" action=@Url.Action("add_feedback","Home")>
+                            <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
+                                <input type="text" id="name" name="name" />
+                                <label>Name</label>
+                                <span></span>
+                            </div>
+                            <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
+                                <input type="email" id="email" name="email" />
+                                <label>Email</label>
+                                <span></span>
+                            </div>
+                            <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
+                                <input type="tel" id="phone" name="phone" />
+                                <label>Phone</label>
+                                <span></span>
+                            </div>
+                            <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
+                                <input type="text" id="subject" name="subject" required />
+                                <label>Subject [Required]</label>
+                                <span></span>
+                            </div>
+                            <div class="styled-input wow slideInUp animated animated" data-wow-delay=".5s">
+                                <textarea rows="4" cols="30" id="message" name="message" maxlength="220" required> </textarea>
+                                <label>Message [Required]</label>
+                                <span></span>
+                            </div>
+                            <div class="send wow shake animated animated" data-wow-delay=".5s">
+                                <input type="submit" value="Submit">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+        <!-- /TITLE -->
+    </div>
+</div>
+

@@ -46,19 +46,19 @@ namespace pawana_camping.Models
             }
         }
 
-        public int Insert(string name, string email, string comment_type, string sub, string msg)
+        public int insert_feedback(string name, string email, string phone, string sub, string msg)
         {
             try
             {
                 int id = -1;
-                string query = "INSERT INTO testimony (Name, Email_id, Comment_type, Subject, Message, Status, Date) VALUES(@name, @email, @com_type, @sub, @msg, @sts, NOW())";
+                string query = "INSERT INTO feedback (name, email, phone, subject, message, status, date) VALUES(@name, @email, @phone, @sub, @msg, @sts, NOW())";
 
                 if (this.OpenConnection() == true)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@name", name);
                     cmd.Parameters.AddWithValue("@email", email);
-                    cmd.Parameters.AddWithValue("@com_type", comment_type);
+                    cmd.Parameters.AddWithValue("@phone", phone);
                     cmd.Parameters.AddWithValue("@sub", sub);
                     cmd.Parameters.AddWithValue("@msg", msg);
                     cmd.Parameters.AddWithValue("@sts", false);
@@ -105,12 +105,11 @@ namespace pawana_camping.Models
             }
         }
 
-        public List<string>[] testimony_show(int offset)
+        public List<string>[] feedback_show(int offset, int limit)
         {
             try
             {
-                //string query = "SELECT * FROM testimony ORDER BY Date DESC, ID DESC LIMIT 2 OFFSET @offset";
-                string query = "SELECT * FROM testimony where Comment_type='Testimony'";
+                string query = "SELECT * FROM feedback ORDER BY ID DESC LIMIT @limit OFFSET @offset";
 
                 list_feedback_show[0] = new List<string>();
                 list_feedback_show[1] = new List<string>();
@@ -120,18 +119,18 @@ namespace pawana_camping.Models
                 {
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@offset", offset);
+                    cmd.Parameters.AddWithValue("@limit", limit);
                     MySqlDataReader dataReader = cmd.ExecuteReader();
 
                     while (dataReader.Read())
                     {
-                        list_feedback_show[0].Add(dataReader["Subject"] + "");
-                        list_feedback_show[1].Add(dataReader["Message"] + "");
-                        list_feedback_show[2].Add(dataReader["Date"] + "");
+                        list_feedback_show[0].Add(dataReader["subject"] + "");
+                        list_feedback_show[1].Add(dataReader["message"] + "");
+                        list_feedback_show[2].Add(dataReader["date"] + "");
                     }
 
                     dataReader.Close();
                     this.CloseConnection();
-                    MessageBox.Show(list_feedback_show[0].ToString());
                     return list_feedback_show;
                 }
                 else
@@ -289,7 +288,27 @@ namespace pawana_camping.Models
             try
             {
                 int count = 0;
-                string query = "select count(id) from pawna_camping.booking_details";
+                string query = "select count(id) from booking_details";
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    count = Convert.ToInt32(cmd.ExecuteScalar());
+                    this.CloseConnection();
+                }
+                return count;
+            }
+            catch (MySqlException ex)
+            {
+                return 0;
+            }
+        }
+
+        public int feedback_count()
+        {
+            try
+            {
+                int count = 0;
+                string query = "select count(id) from feedback";
                 if (this.OpenConnection() == true)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, connection);

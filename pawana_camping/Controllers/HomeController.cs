@@ -22,6 +22,7 @@ namespace pawana_camping.Controllers
     public class HomeController : Controller
     {
         public int event_page_size = 10;
+        public int feedback_page_size = 3;
         public int booking_page_size = 10;
 
         public ActionResult Index()
@@ -88,6 +89,14 @@ namespace pawana_camping.Controllers
 
         public ActionResult Feedback()
         {
+            HttpContext.Session.Add("offset_feedback", 0);
+
+            var obj = new db_connect();
+            List<string>[] list = new List<string>[3];
+            list = obj.feedback_show(Int32.Parse(HttpContext.Session["offset_feedback"].ToString()), feedback_page_size);
+            ViewBag.list = list;
+            ViewBag.total = list[0].Count();
+
             return View();
         }
 
@@ -285,6 +294,21 @@ namespace pawana_camping.Controllers
             }
         }
 
+        public ActionResult add_feedback(string name, string email, string phone, string subject, string message)
+        {
+            try
+            {
+                var obj = new db_connect();
+                obj.insert_feedback(name, email, phone, subject, message);
+                return RedirectToAction("Feedback", "Home");
+            }
+            catch (Exception ex)
+            {
+                System.Web.HttpContext.Current.Response.Write("<script>alert('There is some issue while saving the details, please try again, Thanks.')</script>");
+                return RedirectToAction("Feedback", "Home");
+            }
+        }
+
         public ActionResult F_Events()
         {
             try
@@ -379,6 +403,103 @@ namespace pawana_camping.Controllers
             catch (Exception ex)
             {
                 return View("Events");
+            }
+        }
+
+        public ActionResult F_Feedback()
+        {
+            try
+            {
+                var obj = new db_connect();
+                List<string>[] list = new List<string>[3];
+                list = obj.feedback_show(0, feedback_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Feedback");
+            }
+            catch (Exception ex)
+            {
+                return View("Feedback");
+            }
+        }
+
+        public ActionResult P_Feedback()
+        {
+            try
+            {
+                HttpContext.Session.Add("offset_feedback", (Int32.Parse(HttpContext.Session["offset_feedback"].ToString()) - feedback_page_size));
+                if (Int32.Parse(HttpContext.Session["offset_feedback"].ToString()) <= (feedback_page_size - 1))
+                {
+                    HttpContext.Session.Add("offset_feedback", 0);
+                }
+
+                var obj = new db_connect();
+                List<string>[] list = new List<string>[3];
+                list = obj.feedback_show(Int32.Parse(HttpContext.Session["offset_feedback"].ToString()), feedback_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Feedback");
+            }
+            catch (Exception ex)
+            {
+                return View("Feedback");
+            }
+        }
+
+        public ActionResult N_Feedback()
+        {
+            try
+            {
+                var obj = new db_connect();
+                int cnt = obj.feedback_count();
+                HttpContext.Session.Add("offset_feedback", (Int32.Parse(HttpContext.Session["offset_feedback"].ToString()) + feedback_page_size));
+                if (Int32.Parse(HttpContext.Session["offset_feedback"].ToString()) > cnt)
+                {
+                    HttpContext.Session.Add("offset_feedback", (cnt - (cnt % feedback_page_size)));
+                }
+                List<string>[] list = new List<string>[3];
+                list = obj.feedback_show(Int32.Parse(HttpContext.Session["offset_feedback"].ToString()), feedback_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Feedback");
+            }
+            catch (Exception ex)
+            {
+                return View("Feedback");
+            }
+        }
+
+        public ActionResult L_Feedback()
+        {
+            try
+            {
+                var obj = new db_connect();
+                int cnt = obj.feedback_count();
+                if (cnt > 0)
+                {
+                    if (cnt % feedback_page_size == 0)
+                    {
+                        HttpContext.Session.Add("offset_feedback", (cnt - feedback_page_size));
+                    }
+                    else
+                    {
+                        HttpContext.Session.Add("offset_feedback", (cnt - (cnt % feedback_page_size)));
+                    }
+                }
+
+                List<string>[] list = new List<string>[3];
+                list = obj.feedback_show(Int32.Parse(HttpContext.Session["offset_feedback"].ToString()), feedback_page_size);
+                ViewBag.list = list;
+                ViewBag.total = list[0].Count();
+
+                return View("Feedback");
+            }
+            catch (Exception ex)
+            {
+                return View("Feedback");
             }
         }
 
