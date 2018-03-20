@@ -35,17 +35,26 @@ $(document).ready(function(){
         </div>
         <div id="large-header" class="large-header">            
             <canvas id="demo-canvas"></canvas>
-            <h1 class="main-title"><a class="link link--takiri" href="">
-                <i class="fa fa-file-image-o" style="font-size:48px;color:#9900cc" tooltip-glyph="glyph-tooltip-demo" data-original-title="View th gallery"></i>
+            <h1 class="main-title">
+            <a class="link link--takiri" href="@Url.Action("Gallery","Home")" title="View the gallery">
+                <i class="fa fa-file-image-o" style="font-size:48px;color:#F57C00"></i>
+            </a>
                 <br/>
-                <i class="fa fa fa-calendar-check-o" style="font-size:48px;color:#000080"  tooltip-glyph="glyph-tooltip-demo" data-original-title="Upcoming Events"></i>
-                <br />
-                <i class="fa fa-comment" style="font-size:48px;color:#33cc33" tooltip-glyph="glyph-tooltip-demo" data-original-title="Please leave your comment/feedback"></i>
-                <br />
-                <i class="fa fa-ticket" style="font-size:48px;color:#ffff33" tooltip-glyph="glyph-tooltip-demo" data-original-title="Click Here to book your ticket"></i>
-                <br />
-                <i class="fa fa-phone" style="font-size:48px;color:#ff3333" tooltip-glyph="glyph-tooltip-demo" data-original-title="9096325735"></i>
-                </a></h1>
+            <a class="link link--takiri" href="@Url.Action("Events","Home")" title="Upcoming Events">
+                    <i class="fa fa fa-calendar-check-o" style="font-size:48px;color:#04C8FC"></i>
+            </a>
+                    <br />
+            <a class="link link--takiri" href="@Url.Action("Feedback","Home")" title="Please leave your comment/feedback">
+                    <i class="fa fa-comment" style="font-size:48px;color:#CF228E"></i>
+            </a>
+                    <br />
+            <a class="link link--takiri" href="#booking" title="Click Here to book your ticket">
+                    <i class="fa fa-ticket" style="font-size:48px;color:#ff3333"></i>
+            </a>
+                    <br />
+            <a class="link link--takiri" href="#contact" title="9096325735">
+                    <i class="fa fa-phone" style="font-size:48px;color:#46C637"></i>
+            </a></h1>
         </div>
     </div>
 </div>
