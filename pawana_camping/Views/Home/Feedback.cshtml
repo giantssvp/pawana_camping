@@ -67,7 +67,7 @@
                                 <span></span>
                             </div>
                             <div class="send wow shake animated animated" data-wow-delay=".5s">
-                                <input type="submit" value="Submit">
+                                <input type="submit" value="Submit" id="submit_btn_feedback">
                             </div>
                         </form>
 
@@ -80,3 +80,44 @@
     </div>
 </div>
 
+<script type="text/javascript">
+$(document).ready(function () {
+        function ValidateEmail(email) {
+            var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            return expr.test(email);
+        };
+
+        function ValidateMobNumber(number) {
+            if (number == "") {
+                alert("You didn't enter a phone number.");
+                return false;
+            }
+            else if (isNaN(number)) {
+                alert("The phone number contains illegal characters.");
+                return false;
+            }
+            else if (!(number.length == 10)) {
+                alert("The phone number is the wrong length. \nPlease enter 10 digit mobile no.");
+                return false;
+            }
+            else {
+                return true;
+            }
+        };
+
+        $("#submit_btn_feedback").click(function () {
+            if (!ValidateEmail($("#email").val())) {
+                alert("Please enter valid email address.");
+                $("#email").focus();
+                return false;
+            }
+            else if (!ValidateMobNumber($("#phone").val())) {
+                $("#phone").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        });
+    });
+</script>

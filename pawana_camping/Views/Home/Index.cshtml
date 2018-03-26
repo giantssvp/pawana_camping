@@ -86,7 +86,7 @@
             <div class="col-md-3 staff2">
                 <div class="view wow fadeInLeft animated animated" data-wow-delay=".5s">
                     <div class="mask1"><img src="~/images/bhushi_dam.jpg" alt="image" class="img-responsive zoom-img" /></div>
-                    Bhushi Dam                    
+                    Bhushi Dam 17KM                    
                 </div>
             </div>
             
@@ -462,17 +462,16 @@
                                     <label>Partial Payment</label>
                                     <span></span>
                                 </div>
-                                <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
-                                    <input type="text" id="total_cost" name="total_cost"/>
+                                <div class="styled-input wide wow slideInUp1 animated animated" data-wow-delay=".5s">
+                                    <input type="text" id="total_cost" name="total_cost" readonly/>
                                     <label>Total Cost</label>
                                     <span></span>
                                 </div>                               
                                 <div class="send wow shake animated animated" data-wow-delay=".5s">
-                                    <input type="submit" value="Checkout">
+                                    <input type="submit" id="submit_btn" value="Checkout">
                                 </div>
                             </form>
-                        
-                    </div>
+</div>
                     <div class="clearfix"> </div>
                 </div>
             </div>
@@ -584,6 +583,44 @@
     });
 
     $(document).ready(function () {
+        function ValidateEmail(email) {
+            var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            return expr.test(email);
+        };
+
+        function ValidateMobNumber(number) {
+            if (number == "") {
+                alert("You didn't enter a phone number.");
+                return false;
+            }
+            else if (isNaN(number)) {
+                alert("The phone number contains illegal characters.");
+                return false;
+            }
+            else if (!(number.length == 10)) {
+                alert("The phone number is the wrong length. \nPlease enter 10 digit mobile no.");
+                return false;
+            }
+            else {
+                return true;
+            }
+        };
+
+        $("#submit_btn").click(function () {
+            if (!ValidateEmail($("#email").val())) {
+                alert("Please enter valid email address.");
+                $("#email").focus();
+                return false;
+            }
+            else if (!ValidateMobNumber($("#phone").val())) {
+                $("#phone").focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        });
+
         $('#adult').change(function () {
             var part_pay = 0;
             if ($('#partial_payment').prop("checked")) {
@@ -666,7 +703,7 @@
                 },
                 contentType: 'application/json'
             });
-    });
+    });    
 </script>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -681,5 +718,5 @@
         j('#bk_date').datepicker({
              minDate: new Date()
         });
-    });
+    });    
 </script>
