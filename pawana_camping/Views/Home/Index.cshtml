@@ -640,6 +640,33 @@
             });
         });
     });
+
+    $(document).ready(function () {
+            var part_pay = 0;
+            if ($('#partial_payment').prop("checked")) {
+                part_pay = 1;
+            }
+            var data = JSON.stringify({
+                'adult': $('#adult').val(),
+                'child': $('#child').val(),
+                'part_pay': part_pay
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/calculate_amount",
+                data: data,
+                dataType: 'json',
+                success: function (d) {
+                    var list = d.c;
+                    $('#total_cost').val(list);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+                contentType: 'application/json'
+            });
+    });
 </script>
 
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
