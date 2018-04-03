@@ -8,7 +8,7 @@ ul.side_nav li {
 .large-header {
 	position: relative;
 	width: 100%;
-	background: #333;
+	/*background: #333;*/
 	overflow: hidden;
 	background-size: cover;
 	background-position: center center;
@@ -24,7 +24,7 @@ ul.side_nav li {
 }
 
 .demo-2 .large-header {
-	background-image: url('../images/banner.png');
+	/*background-image: url('../images/banner.png');*/
 	background-position: center bottom;
 }
 

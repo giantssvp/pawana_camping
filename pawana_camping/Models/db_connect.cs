@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace pawana_camping.Models
 {
@@ -448,4 +450,86 @@ namespace pawana_camping.Models
         /*Login Section*/
 
     } //db_connect class
+
+    /*Salt Generator */
+    public static class SaltGenerator
+    {
+        private static RNGCryptoServiceProvider m_cryptoServiceProvider = null;
+        private const int SALT_SIZE = 24;
+
+        public static object Utility { get; private set; }
+
+        static SaltGenerator()
+        {
+            m_cryptoServiceProvider = new RNGCryptoServiceProvider();
+        }
+
+        public static string GetSaltString()
+        {
+            // Lets create a byte array to store the salt bytes
+            byte[] saltBytes = new byte[SALT_SIZE];
+
+            // lets generate the salt in the byte array
+            m_cryptoServiceProvider.GetNonZeroBytes(saltBytes);
+
+            // Let us get some string representation for this salt
+            //string saltString = Utility.GetString(saltBytes);
+            var saltString = Convert.ToBase64String(saltBytes);
+            // var b = Convert.FromBase64String(s);
+            // Now we have our salt string ready lets return it to the caller
+            return saltString;
+        }
+    }
+    /*Salt Generator*/
+    /*Hash Generator*/
+    public class HashComputer
+    {
+        public string GetPasswordHashAndSalt(string message1)
+        {
+            // Let us use SHA256 algorithm to 
+            // generate the hash from this salted password
+            /*
+            SHA256 sha = new SHA256CryptoServiceProvider();
+            byte[] dataBytes = Utility.GetBytes(message);
+            byte[] resultBytes = sha.ComputeHash(dataBytes);
+
+            // return the hash string to the caller
+            return Utility.GetString(resultBytes);
+            */
+            byte[] message = Encoding.UTF8.GetBytes(message1);
+
+            UnicodeEncoding UE = new UnicodeEncoding();
+            byte[] hashValue;
+            SHA512Managed hashString = new SHA512Managed();
+            string hex = "";
+            hashValue = hashString.ComputeHash(message);
+            foreach (byte x in hashValue)
+            {
+                hex += String.Format("{0:x2}", x);
+            }
+            return hex;
+        }
+    }
+    /*Hash Generator*/
+    /* Password manager to calculate hash ,salt and match the password*/
+    public class PasswordManager
+    {
+        HashComputer m_hashComputer = new HashComputer();
+
+        public string GeneratePasswordHash(string plainTextPassword, out string salt)
+        {
+            salt = SaltGenerator.GetSaltString();
+
+            string finalString = plainTextPassword + salt;
+
+            return m_hashComputer.GetPasswordHashAndSalt(finalString);
+        }
+
+        public bool IsPasswordMatch(string password, string salt, string hash)
+        {
+            string finalString = password + salt;
+            return hash == m_hashComputer.GetPasswordHashAndSalt(finalString);
+        }
+    }
+    /*password manager*/
 } // namespace

@@ -159,6 +159,8 @@
     <Content Include="Content\component.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\magnific-popup.css" />
+    <Content Include="Content\owl.carousel.css" />
+    <Content Include="Content\slider.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\style_login.css" />
     <Content Include="favicon.ico" />
@@ -255,8 +257,12 @@
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\modernizr.custom.js" />
     <Content Include="Scripts\move-top.js" />
+    <Content Include="Scripts\owl.carousel.js" />
+    <Content Include="Scripts\owl.carousel.min.js" />
     <Content Include="Scripts\rAF.js" />
     <Content Include="Scripts\responsiveslides.min.js" />
+    <Content Include="Scripts\slider.js" />
+    <Content Include="Scripts\slider.min.js" />
     <Content Include="Scripts\wow.min.js" />
     <Content Include="sql_db.txt" />
     <Content Include="Web.config" />

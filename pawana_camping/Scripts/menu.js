@@ -20,15 +20,15 @@ var toggle_nav_container = function () {
 
 	// toggle the container on click of button (can be remapped to $menuButton)
 
-	$toggleButton.on("click", function(){
+	//$toggleButton.on("click", function(){
 
 		// declare a local variable for the window width
 		var $viewportWidth = $(window).width();
 
 		// if statement to determine whether the nav container is already toggled or not
 
-		if($navContainer.is(':hidden'))
-		{	
+		//if($navContainer.is(':hidden'))
+		//{	
 			$wrapper.removeClass('closed_wrapper');
 			$wrapper.addClass("open_wrapper");
 			$navContainer.slideDown(200).addClass('container_open').css("z-index", "2");
@@ -38,7 +38,7 @@ var toggle_nav_container = function () {
 			$("#m_ham_1").addClass("m_nav_ham_1_open");
 			$("#m_ham_2").addClass("m_nav_ham_2_open");
 			$("#m_ham_3").addClass("m_nav_ham_3_open");
-
+    /*
 		}
 		else
 		{
@@ -53,7 +53,7 @@ var toggle_nav_container = function () {
 
 		}
 	});
-
+    */
 
 
 }
