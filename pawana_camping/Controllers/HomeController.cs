@@ -25,6 +25,7 @@ namespace pawana_camping.Controllers
         public int feedback_page_size = 3;
         public int booking_page_size = 10;
 
+        public static db_connect obj = new db_connect();
         public ActionResult Index()
         {
             HttpContext.Session.Add("offset_event", 0);
@@ -68,7 +69,7 @@ namespace pawana_camping.Controllers
         {
             HttpContext.Session.Add("offset_event", 0);
 
-            var obj = new db_connect();
+            //var obj = new db_connect();
             List<string>[] list = new List<string>[3];
             list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
             ViewBag.list = list;
@@ -91,7 +92,7 @@ namespace pawana_camping.Controllers
         {
             HttpContext.Session.Add("offset_feedback", 0);
 
-            var obj = new db_connect();
+            //var obj = new db_connect();
             List<string>[] list = new List<string>[3];
             list = obj.feedback_show(Int32.Parse(HttpContext.Session["offset_feedback"].ToString()), feedback_page_size);
             ViewBag.list = list;
@@ -268,7 +269,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 obj.update_rates(base_adult, base_child);
                 return RedirectToAction("ChangeRate", "Home");
             }
@@ -283,7 +284,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 obj.Insert_Event(heading, description);
                 return RedirectToAction("Eventfeed", "Home");
             }
@@ -298,7 +299,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 obj.insert_feedback(name, email, phone, subject, message);
                 return RedirectToAction("Feedback", "Home");
             }
@@ -313,7 +314,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 List<string>[] list = new List<string>[3];
                 list = obj.events_show(0, event_page_size);
                 ViewBag.list = list;
@@ -337,7 +338,7 @@ namespace pawana_camping.Controllers
                     HttpContext.Session.Add("offset_event", 0);
                 }
 
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 List<string>[] list = new List<string>[3];
                 list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
                 ViewBag.list = list;
@@ -355,7 +356,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 int cnt = obj.event_count();
                 HttpContext.Session.Add("offset_event", (Int32.Parse(HttpContext.Session["offset_event"].ToString()) + event_page_size));
                 if (Int32.Parse(HttpContext.Session["offset_event"].ToString()) > cnt)
@@ -379,7 +380,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 int cnt = obj.event_count();
                 if (cnt > 0)
                 {
@@ -410,7 +411,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 List<string>[] list = new List<string>[3];
                 list = obj.feedback_show(0, feedback_page_size);
                 ViewBag.list = list;
@@ -434,7 +435,7 @@ namespace pawana_camping.Controllers
                     HttpContext.Session.Add("offset_feedback", 0);
                 }
 
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 List<string>[] list = new List<string>[3];
                 list = obj.feedback_show(Int32.Parse(HttpContext.Session["offset_feedback"].ToString()), feedback_page_size);
                 ViewBag.list = list;
@@ -452,7 +453,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 int cnt = obj.feedback_count();
                 HttpContext.Session.Add("offset_feedback", (Int32.Parse(HttpContext.Session["offset_feedback"].ToString()) + feedback_page_size));
                 if (Int32.Parse(HttpContext.Session["offset_feedback"].ToString()) > cnt)
@@ -476,7 +477,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 int cnt = obj.feedback_count();
                 if (cnt > 0)
                 {
@@ -507,7 +508,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 List<string>[] list = new List<string>[14];
                 list = obj.bookings_show(0, booking_page_size);
                 ViewBag.list = list;
@@ -531,7 +532,7 @@ namespace pawana_camping.Controllers
                     HttpContext.Session.Add("offset_booking", 0);
                 }
 
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 List<string>[] list = new List<string>[14];
                 list = obj.bookings_show(Int32.Parse(HttpContext.Session["offset_booking"].ToString()), booking_page_size);
                 ViewBag.list = list;
@@ -549,7 +550,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 int cnt = obj.booking_count();
                 HttpContext.Session.Add("offset_booking", (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) + booking_page_size));
                 if (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) > cnt)
@@ -573,7 +574,7 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 int cnt = obj.booking_count();
                 if (cnt > 0)
                 {
@@ -778,7 +779,7 @@ namespace pawana_camping.Controllers
 
         public ActionResult calculate_amount(string adult, string child, string part_pay)
         {
-            var obj = new db_connect();
+            //var obj = new db_connect();
             int base_adult = obj.get_rates("adult");
             int base_child = obj.get_rates("child");
             double total_cost = 0;            
