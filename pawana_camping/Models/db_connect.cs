@@ -87,8 +87,8 @@ namespace pawana_camping.Models
             try
             {
                 int total_amount = ((adult * get_rates("adult")) + (children * get_rates("child")));
-                string query = "INSERT INTO booking_details (transaction_id, transaction_status, transaction_date, product_info," + 
-                                  "name, email, phone, booking_date, adults, children, total_amount, part_payment, paid_amount)VALUES(\"" + 
+                string query = "INSERT INTO booking_details (transaction_id, transaction_status, transaction_date, product_info," +
+                                  "name, email, phone, booking_date, adults, children, total_amount, part_payment, paid_amount)VALUES(\"" +
                                   transaction_id + "\",\"" + transaction_status + "\",\"" + transaction_date + "\",\"" + product_info + "\",\"" + name + "\",\"" + email + "\",\"" + phone + "\",\"" +
                                   booking_date + "\"," + adult + "," + children + "," + total_amount + "," + part_payment + "," + paid_amount + ")";
 
@@ -364,7 +364,7 @@ namespace pawana_camping.Models
                 return 0;
             }
         }
-        
+
         public int update_rates(string base_adult, string base_child)
         {
             try
@@ -447,7 +447,7 @@ namespace pawana_camping.Models
                     cmd.Parameters.AddWithValue("@name", name);
                     cmd.Parameters.AddWithValue("@password", hash);
                     rdr = cmd.ExecuteReader();
-                    
+
                     if (rdr.Read())
                     {
                         this.CloseConnection();
@@ -465,5 +465,5 @@ namespace pawana_camping.Models
         /*Login Section*/
 
     } //db_connect class
-    
+
 } // namespace
