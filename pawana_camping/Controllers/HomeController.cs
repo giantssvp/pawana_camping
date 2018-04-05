@@ -25,6 +25,19 @@ namespace pawana_camping.Controllers
         public int feedback_page_size = 3;
         public int booking_page_size = 10;
 
+        
+        public static string mailServer = "relay-hosting.secureserver.net";
+        public static string mailFrom = "info@pawnaheritagecamping.com";
+        public static string mailTo = "info@pawnaheritagecamping.com";
+        public static string mailPassword = "Pawna@123";
+        /*
+        public static string mailServer = "smtp.gmail.com";
+        public static string mailFrom = "abcdtes26@gmail.com";
+        public static string mailTo = "abcdtes26@gmail.com";
+        public static string mailBCC = "abcdtes26@gmail.com";
+        public static string mailPassword = "9921642540";
+        */
+
         public static db_connect obj = new db_connect();
         public ActionResult Index()
         {
@@ -190,6 +203,42 @@ namespace pawana_camping.Controllers
                     obj.Insert_Booking(ViewBag.tid, ViewBag.status, ViewBag.tr_date_time, ViewBag.prod_info,
                     ViewBag.name, ViewBag.email, ViewBag.phone, ViewBag.bk_date_time, Int32.Parse(ViewBag.adults), Int32.Parse(ViewBag.children),
                                       Int32.Parse(ViewBag.part_payment), (int)(Convert.ToDouble(ViewBag.tr_amt)));
+
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient(mailServer);
+
+                    mail.From = new MailAddress(mailFrom);
+                    mail.To.Add(mailFrom);
+                    mail.Subject = "Booking Details For : " + ViewBag.name;
+                    mail.IsBodyHtml = true;
+
+                    string htmlBody;
+
+                    htmlBody = "<html> <head>  </head> <body>" +
+                                "<div><img src=\"cid:icon_01\"> </div>" +
+                                "<table border=\"1\" style=\"font - family:Georgia, Garamond, Serif; width: 100 %; color: blue; font - style:italic; \"> <tr bgcolor=\"#00FFFF\" align=\"center\"> <th> Transaction Id </th> <th> Status </th> <th> Name </th> <th> Email </th> <th> Phone </th>  <th>Booking Date</th>  " +
+                                "<th>Adults</th> <th>Children</th> <th>Part Payment</th> <th>Paid Amount</th></tr> <tr align=\"center\"> " +
+                                "<td>" + ViewBag.tid + "</td>" +
+                                "<td>" + ViewBag.status + "</td>" +
+                                "<td>" + ViewBag.name + "</td>" +
+                                "<td>" + ViewBag.email + "</td>" +
+                                "<td>" + ViewBag.phone + "</td>" +
+                                "<td>" + ViewBag.bk_date_time + "</td>" +
+                                "<td>" + ViewBag.adults + "</td>" +
+                                "<td>" + ViewBag.children + "</td>" +
+                                "<td>" + ViewBag.part_payment + "</td>" +
+                                "<td>" + ViewBag.tr_amt + "</td>" +
+                                "</tr> </table> </body> </html> ";
+
+
+                    mail.Body = htmlBody;
+                    //SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential(mailFrom, mailPassword);
+                    //SmtpServer.EnableSsl = true;
+
+                    SmtpServer.Send(mail);
+                    TempData["AlertMessage"] = "Your details saved successfully, We will get back to you shortly.";
+                    return RedirectToAction("Contact", "Home");
                 }
                 else
                 {
