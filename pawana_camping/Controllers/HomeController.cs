@@ -700,8 +700,8 @@ namespace pawana_camping.Controllers
                     data.Add("email", email);
                     data.Add("phone", phone);
                     data.Add("productinfo", "Tent Booking");
-                    data.Add("surl", "http://localhost:64707/Home/PaymentSuccess");
-                    data.Add("furl", "http://localhost:64707/Home/PaymentFailure");
+                    data.Add("surl", "http://www.pawnaheritagecamping.com/Home/PaymentSuccess");
+                    data.Add("furl", "http://www.pawnaheritagecamping.com/Home/PaymentFailure");
                     data.Add("lastname", "thakar");
                     data.Add("curl", "http://www.pawnaheritagecamping.com");
                     data.Add("address1", "pune");
