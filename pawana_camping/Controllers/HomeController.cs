@@ -42,7 +42,7 @@ namespace pawana_camping.Controllers
         public ActionResult Index()
         {
             HttpContext.Session.Add("offset_event", 0);
-            var obj = new db_connect();
+            //var obj = new db_connect();
             List<string>[] list = new List<string>[3];
             list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), 3);
             ViewBag.list = list;
@@ -64,7 +64,7 @@ namespace pawana_camping.Controllers
         [Authorize]
         public ActionResult Dashboard()
         {
-            var obj = new db_connect();
+            //var obj = new db_connect();
             List<string>[] list = new List<string>[14];
             list = obj.bookings_show(0, booking_page_size);
             ViewBag.list = list;            
@@ -199,7 +199,7 @@ namespace pawana_camping.Controllers
                     ViewBag.prod_info = Request.Form["productinfo"];
                     ViewBag.part_payment = Request.Form["udf5"];
 
-                    var obj = new db_connect();
+                    //var obj = new db_connect();
                     obj.Insert_Booking(ViewBag.tid, ViewBag.status, ViewBag.tr_date_time, ViewBag.prod_info,
                     ViewBag.name, ViewBag.email, ViewBag.phone, ViewBag.bk_date_time, Int32.Parse(ViewBag.adults), Int32.Parse(ViewBag.children),
                                       Int32.Parse(ViewBag.part_payment), (int)(Convert.ToDouble(ViewBag.tr_amt)));
@@ -300,7 +300,7 @@ namespace pawana_camping.Controllers
                 ViewBag.prod_info = Request.Form["productinfo"];
                 ViewBag.part_payment = Request.Form["udf5"];
 
-                var obj = new db_connect();
+                //var obj = new db_connect();
                 obj.Insert_Booking(ViewBag.tid, ViewBag.status, ViewBag.tr_date_time, ViewBag.prod_info,
                 ViewBag.name, ViewBag.email, ViewBag.phone, ViewBag.bk_date_time, Int32.Parse(ViewBag.adults), Int32.Parse(ViewBag.children),
                                     Int32.Parse(ViewBag.part_payment), (int)(Convert.ToDouble(ViewBag.tr_amt)));
