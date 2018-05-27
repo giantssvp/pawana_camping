@@ -278,6 +278,7 @@
     <Content Include="images\water.jpg" />
     <Content Include="images\zigzag.png" />
     <Content Include="images\zoom.svg" />
+    <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\demo-2.js" />
     <Content Include="Scripts\easing.js" />
@@ -293,6 +294,7 @@
     <Content Include="Scripts\slider.js" />
     <Content Include="Scripts\slider.min.js" />
     <Content Include="Scripts\wow.min.js" />
+    <Content Include="sitemap.xml" />
     <Content Include="sql_db.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -346,6 +348,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\PaymentStatus.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\DeleteEvent.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

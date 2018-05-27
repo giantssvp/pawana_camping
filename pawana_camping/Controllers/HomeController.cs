@@ -15,6 +15,7 @@ using System.Web.UI.HtmlControls;
 using System.Security.Cryptography;
 using System.Net;
 using System.IO;
+using System.Windows.Forms;
 
 namespace pawana_camping.Controllers
 {
@@ -57,10 +58,13 @@ namespace pawana_camping.Controllers
         [Authorize]
         public ActionResult Dashboard()
         {
+            ViewBag.total = 0;
+            HttpContext.Session.Add("offset_dashboard", 0);
             List<string>[] list = new List<string>[14];
-            list = obj.bookings_show(0, booking_page_size);
-            ViewBag.list = list;            
+            list = obj.bookings_show(Int32.Parse(HttpContext.Session["offset_dashboard"].ToString()), booking_page_size);
+            ViewBag.list = list;
             ViewBag.total = list[0].Count();
+            
             return View();
         }
 
@@ -74,7 +78,7 @@ namespace pawana_camping.Controllers
         {
             HttpContext.Session.Add("offset_event", 0);
 
-            List<string>[] list = new List<string>[3];
+            List<string>[] list = new List<string>[4];
             list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
             ViewBag.list = list;
             ViewBag.total = list[0].Count();
@@ -131,6 +135,19 @@ namespace pawana_camping.Controllers
         }
 
         [Authorize]
+        public ActionResult DeleteEvent()
+        {
+            HttpContext.Session.Add("offset_event", 0);
+
+            List<string>[] list = new List<string>[4];
+            list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
+            ViewBag.list = list;
+            ViewBag.total = list[0].Count();
+
+            return View();
+        }
+
+        [Authorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -138,7 +155,7 @@ namespace pawana_camping.Controllers
         }
 
         [HttpPost]
-        public ActionResult PaymentStatus(FormCollection form)
+        public ActionResult PaymentStatus(System.Web.Mvc.FormCollection form)
         {
             try
             {
@@ -183,10 +200,11 @@ namespace pawana_camping.Controllers
                 ViewBag.children = Request.Form["udf4"];
                 ViewBag.prod_info = Request.Form["productinfo"];
                 ViewBag.part_payment = Request.Form["udf5"];
+                ViewBag.package = Request.Form["udf6"];
 
                 obj.Insert_Booking(ViewBag.tid, ViewBag.status, ViewBag.tr_date_time, ViewBag.prod_info,
                 ViewBag.name, ViewBag.email, ViewBag.phone, ViewBag.bk_date_time, Int32.Parse(ViewBag.adults), Int32.Parse(ViewBag.children),
-                                    Int32.Parse(ViewBag.part_payment), (int)(Convert.ToDouble(ViewBag.tr_amt)));
+                Int32.Parse(ViewBag.part_payment), (int)(Convert.ToDouble(ViewBag.tr_amt)), ViewBag.package);
                 
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient(mailServer);
@@ -228,16 +246,18 @@ namespace pawana_camping.Controllers
             }
             catch (Exception ex)
             {
-                Response.Write("<span style='color:red'>" + ex.Message + "</span>");
+                //Response.Write("<span style='color:red'>" + ex.Message + "</span>");
                 return View();
             }
         }        
         
-        public ActionResult UpdateNow(string base_adult, string base_child)
+        public ActionResult UpdateNow(string p1_base_adult, string p1_base_child, string p2_base_adult, string p2_base_child, string p3_base_adult, string p3_base_child)
         {
             try
             {
-                obj.update_rates(base_adult, base_child);
+                obj.update_rates(p1_base_adult, p1_base_child, 1);
+                obj.update_rates(p2_base_adult, p2_base_child, 2);
+                obj.update_rates(p3_base_adult, p3_base_child, 3);
                 return RedirectToAction("ChangeRate", "Home");
             }
             catch (Exception ex)
@@ -261,6 +281,20 @@ namespace pawana_camping.Controllers
             }
         }
 
+        public ActionResult delete_event_btn(int data)
+        {
+            try
+            {
+                obj.Delete_Event(data);
+                return RedirectToAction("DeleteEvent", "Home");
+            }
+            catch (Exception ex)
+            {
+                System.Web.HttpContext.Current.Response.Write("<script>alert('There is some issue while saving the details, please try again, Thanks.')</script>");
+                return RedirectToAction("DeleteEvent", "Home");
+            }
+        }
+
         public ActionResult add_feedback(string name, string email, string phone, string subject, string message)
         {
             try
@@ -275,16 +309,22 @@ namespace pawana_camping.Controllers
             }
         }
 
-        public ActionResult F_Events()
+        public ActionResult F_Events(int data)
         {
             try
             {
-                List<string>[] list = new List<string>[3];
+                List<string>[] list = new List<string>[4];
                 list = obj.events_show(0, event_page_size);
                 ViewBag.list = list;
                 ViewBag.total = list[0].Count();
 
-                return View("Events");
+                if (data == 0)
+                {
+                    return View("Events");
+                }
+                else {
+                    return View("DeleteEvent");
+                }
             }
             catch (Exception ex)
             {
@@ -292,7 +332,7 @@ namespace pawana_camping.Controllers
             }
         }
 
-        public ActionResult P_Events()
+        public ActionResult P_Events(int data)
         {
             try
             {
@@ -302,12 +342,19 @@ namespace pawana_camping.Controllers
                     HttpContext.Session.Add("offset_event", 0);
                 }
 
-                List<string>[] list = new List<string>[3];
+                List<string>[] list = new List<string>[4];
                 list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
                 ViewBag.list = list;
                 ViewBag.total = list[0].Count();
 
-                return View("Events");
+                if (data == 0)
+                {
+                    return View("Events");
+                }
+                else
+                {
+                    return View("DeleteEvent");
+                }
             }
             catch (Exception ex)
             {
@@ -315,7 +362,7 @@ namespace pawana_camping.Controllers
             }
         }
 
-        public ActionResult N_Events()
+        public ActionResult N_Events(int data)
         {
             try
             {
@@ -325,12 +372,19 @@ namespace pawana_camping.Controllers
                 {
                     HttpContext.Session.Add("offset_event", (cnt - (cnt % event_page_size)));
                 }
-                List<string>[] list = new List<string>[3];
+                List<string>[] list = new List<string>[4];
                 list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
                 ViewBag.list = list;
                 ViewBag.total = list[0].Count();
 
-                return View("Events");
+                if (data == 0)
+                {
+                    return View("Events");
+                }
+                else
+                {
+                    return View("DeleteEvent");
+                }
             }
             catch (Exception ex)
             {
@@ -338,7 +392,7 @@ namespace pawana_camping.Controllers
             }
         }
 
-        public ActionResult L_Events()
+        public ActionResult L_Events(int data)
         {
             try
             {
@@ -355,12 +409,19 @@ namespace pawana_camping.Controllers
                     }                    
                 }
                 
-                List<string>[] list = new List<string>[3];
+                List<string>[] list = new List<string>[4];
                 list = obj.events_show(Int32.Parse(HttpContext.Session["offset_event"].ToString()), event_page_size);
                 ViewBag.list = list;
                 ViewBag.total = list[0].Count();
 
-                return View("Events");
+                if (data == 0)
+                {
+                    return View("Events");
+                }
+                else
+                {
+                    return View("DeleteEvent");
+                }
             }
             catch (Exception ex)
             {
@@ -491,6 +552,7 @@ namespace pawana_camping.Controllers
                 List<string>[] list = new List<string>[14];
                 list = obj.bookings_show(Int32.Parse(HttpContext.Session["offset_booking"].ToString()), booking_page_size);
                 ViewBag.list = list;
+                ViewBag.total = 0;
                 ViewBag.total = list[0].Count();
 
                 return View("Dashboard");
@@ -505,11 +567,11 @@ namespace pawana_camping.Controllers
         {
             try
             {
-                int cnt = obj.booking_count();
+                int cnt1 = obj.booking_count();
                 HttpContext.Session.Add("offset_booking", (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) + booking_page_size));
-                if (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) > cnt)
+                if (Int32.Parse(HttpContext.Session["offset_booking"].ToString()) > cnt1)
                 {
-                    HttpContext.Session.Add("offset_booking", (cnt - (cnt % booking_page_size)));
+                    HttpContext.Session.Add("offset_booking", (cnt1 - (cnt1 % booking_page_size)));
                 }
                 List<string>[] list = new List<string>[14];
                 list = obj.bookings_show(Int32.Parse(HttpContext.Session["offset_booking"].ToString()), booking_page_size);
@@ -559,7 +621,7 @@ namespace pawana_camping.Controllers
         public string txnid1 = string.Empty;
         
         [HttpPost]
-        public void Index(string name, string email, string phone, string total_cost, string bk_date, string adult, string child, string partial_payment)
+        public void Index(string name, string email, string phone, string total_cost, string bk_date, string package, string adult, string child, string partial_payment)
         {
             try
             {
@@ -630,6 +692,11 @@ namespace pawana_camping.Controllers
                         hash_string = hash_string + part_payment;
                         hash_string = hash_string + '|';
                     }
+                    else if (hash_var == "udf6")
+                    {
+                        hash_string = hash_string + package;
+                        hash_string = hash_string + '|';
+                    }
                     else
                     {
                         hash_string = hash_string + (Request.Form[hash_var] != null ? Request.Form[hash_var] : "");// isset if else
@@ -668,6 +735,7 @@ namespace pawana_camping.Controllers
                     data.Add("udf3", adult);
                     data.Add("udf4", child);
                     data.Add("udf5", part_payment);
+                    data.Add("udf6", package);
                     data.Add("pg", "");
                     data.Add("service_provider", "payu_paisa");
                     string strForm = PreparePOSTForm(action1, data);
@@ -730,11 +798,11 @@ namespace pawana_camping.Controllers
             return hex;
         }
 
-        public ActionResult calculate_amount(string adult, string child, string part_pay)
+        public ActionResult calculate_amount(string adult, string child, string package, string part_pay)
         {
             //var obj = new db_connect();
-            int base_adult = obj.get_rates("adult");
-            int base_child = obj.get_rates("child");
+            int base_adult = obj.get_rates("adult", package);
+            int base_child = obj.get_rates("child", package);
             double total_cost = 0;            
             if(Int32.Parse(part_pay) == 1)
             {

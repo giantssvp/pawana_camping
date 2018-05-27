@@ -15,7 +15,7 @@ namespace pawana_camping.Models
         public List<string>[] list_feedback_show = new List<string>[3];
         public List<string>[] list_time_show = new List<string>[1];
         public List<string>[] list_gallery_show = new List<string>[2];
-        public List<string>[] list_events_show = new List<string>[3];
+        public List<string>[] list_events_show = new List<string>[4];
         public List<string>[] list_bookings_show = new List<string>[14];
 
         private bool OpenConnection()
@@ -82,11 +82,11 @@ namespace pawana_camping.Models
 
         public int Insert_Booking(string transaction_id, string transaction_status, string transaction_date, string product_info,
                                   string name, string email, string phone, string booking_date, int adult, int children,
-                                  int part_payment, int paid_amount)
+                                  int part_payment, int paid_amount, string package)
         {
             try
             {
-                int total_amount = ((adult * get_rates("adult")) + (children * get_rates("child")));
+                int total_amount = ((adult * get_rates("adult",package)) + (children * get_rates("child", package)));
                 string query = "INSERT INTO booking_details (transaction_id, transaction_status, transaction_date, product_info," +
                                   "name, email, phone, booking_date, adults, children, total_amount, part_payment, paid_amount)VALUES(\"" +
                                   transaction_id + "\",\"" + transaction_status + "\",\"" + transaction_date + "\",\"" + product_info + "\",\"" + name + "\",\"" + email + "\",\"" + phone + "\",\"" +
@@ -192,7 +192,7 @@ namespace pawana_camping.Models
                 list_events_show[0] = new List<string>();
                 list_events_show[1] = new List<string>();
                 list_events_show[2] = new List<string>();
-
+                list_events_show[3] = new List<string>();
 
                 if (this.OpenConnection() == true)
                 {
@@ -206,6 +206,7 @@ namespace pawana_camping.Models
                         list_events_show[0].Add(dataReader["Heading"] + "");
                         list_events_show[1].Add(dataReader["Description"] + "");
                         list_events_show[2].Add(dataReader["Date"] + "");
+                        list_events_show[3].Add(dataReader["ID"] + "");
                     }
 
                     dataReader.Close();
@@ -325,6 +326,7 @@ namespace pawana_camping.Models
             }
         }
 
+        /**/
         public int event_count()
         {
             try
@@ -345,15 +347,16 @@ namespace pawana_camping.Models
             }
         }
 
-        public int get_rates(string age_grp)
+        public int get_rates(string age_grp, string type)
         {
             try
             {
                 int count = 0;
-                string query = "select amount from pawna_camping.rates where age_group = \"" + age_grp + "\"";
+                string query = "select amount from pawna_camping.rates where age_group = \"" + age_grp + "\" and package_type=@type";
                 if (this.OpenConnection() == true)
                 {
                     MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@type", Int32.Parse(type));
                     count = Convert.ToInt32(cmd.ExecuteScalar());
                     this.CloseConnection();
                 }
@@ -365,20 +368,22 @@ namespace pawana_camping.Models
             }
         }
 
-        public int update_rates(string base_adult, string base_child)
+        public int update_rates(string base_adult, string base_child, int type)
         {
             try
             {
                 int id = -1;
-                string query1 = "UPDATE rates SET amount=@base_adult WHERE age_group=\"adult\"";
-                string query2 = "UPDATE rates SET amount=@base_child WHERE age_group=\"child\"";
+                string query1 = "UPDATE rates SET amount=@base_adult WHERE age_group=\"adult\" and package_type=@type";
+                string query2 = "UPDATE rates SET amount=@base_child WHERE age_group=\"child\" and package_type=@type1";
 
                 if (this.OpenConnection() == true)
                 {
                     MySqlCommand cmd = new MySqlCommand(query1, connection);
                     cmd.Parameters.AddWithValue("@base_adult", Int32.Parse(base_adult));
+                    cmd.Parameters.AddWithValue("@type", type);
                     MySqlCommand cmd1 = new MySqlCommand(query2, connection);
                     cmd1.Parameters.AddWithValue("@base_child", Int32.Parse(base_child));
+                    cmd1.Parameters.AddWithValue("@type1", type);
 
                     cmd.ExecuteNonQuery();
                     cmd1.ExecuteNonQuery();
@@ -415,6 +420,28 @@ namespace pawana_camping.Models
             catch (MySqlException ex)
             {
                 return -1;
+            }
+        }
+
+        public void Delete_Event(int id)
+        {
+            try
+            {
+                string query = "DELETE FROM events where ID = @id";
+
+                if (this.OpenConnection() == true)
+                {
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                    this.CloseConnection();
+                }
+            }
+            catch (MySqlException ex)
+            {
+               
             }
         }
         /*News Section*/

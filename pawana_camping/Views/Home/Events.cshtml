@@ -31,10 +31,10 @@
                 <div class="grid_3 grid_5 wow fadeInRight animated" data-wow-delay=".5s" align="center">
                     <nav>
                         <ul class="pagination pagination-lg">
-                            <li><a href="@Url.Action("F_Events", "Home")" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
-                            <li><a href="@Url.Action("P_Events", "Home")"><</a></li>
-                            <li><a href="@Url.Action("N_Events", "Home")">></a></li>
-                            <li><a href="@Url.Action("L_Events", "Home")" aria-label="Next"><span aria-hidden="true">>></span></a></li>
+                            <li><a href="@Url.Action("F_Events", "Home", new { data = 0})" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
+                            <li><a href="@Url.Action("P_Events", "Home", new { data = 1 })"><</a></li>
+                            <li><a href="@Url.Action("N_Events", "Home", new { data = 1 })">></a></li>
+                            <li><a href="@Url.Action("L_Events", "Home", new { data = 1 })" aria-label="Next"><span aria-hidden="true">>></span></a></li>
                         </ul>
                     </nav>
                     <div class="clearfix"> </div>

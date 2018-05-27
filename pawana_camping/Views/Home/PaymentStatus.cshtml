@@ -15,6 +15,7 @@
     var children = ViewBag.children;
     var prod_info = ViewBag.prod_info;
     var part_pay = "NO";
+    var package_type = ViewBag.package;
     if (ViewBag.part_payment == "1")
     {
         part_pay = "YES";
@@ -75,6 +76,10 @@
             <tr>
                 <td>Booking Date</td>
                 <td>@bk_date_time</td>
+            </tr>
+            <tr>
+                <td>Package Type</td>
+                <td>@package_type</td>
             </tr>
             <tr>
                 <td>Partial Payment</td>

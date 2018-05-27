@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "DeleteEvent";
+}
+@{
+    var results = ViewBag.list;
+    int cnt = ViewBag.total;
+}
+
+@Html.Partial("menu1")
+
+
+<div class="grid_3 grid_5 wow fadeInLeft animated" data-wow-delay=".5s">
+    <br /><br />
+    <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs" role="tablist">
+            <li role="presentation">
+                <a href="@Url.Action("Dashboard","Home")" id="home-tab" role="tab">Booking Details</a>
+            </li>
+            <li role="presentation">
+                <a href="@Url.Action("ChangeRate","Home")" role="tab" id="profile-tab">Change Rates</a>
+            </li>
+            <li role="presentation">
+                <a href="@Url.Action("Eventfeed","Home")" role="tab" id="myTabDrop1-contents">Add Events</a>
+            </li>
+            <li role="presentation" class="active">
+                <a href="@Url.Action("DeleteEvent","Home")" role="tab" id="myTabDrop1-contents">Delete Events</a>
+            </li>
+            <li><a href='@Url.Action("Logout", "Home")' id="home-tab" role="tab">Logout</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <hr class="bs-docs-separator">
+            <div class="bs-docs-example">
+                <table class="table table-striped" align="center" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Select</>
+                            <th>Event ID</th>
+                            <th>Event Headings</th>
+                            <th>Event Description</th>
+                            <th>Event Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < cnt; i++)
+                        {
+                            <tr>
+                                <td>@results[3][i]</td>
+                                <td>@results[0][i]</td>
+                                <td>@results[1][i]</td>
+                                <td>@results[2][i]</td>
+                                <td><a href="@Url.Action("delete_event_btn", "Home", new {data = results[3][i] })" aria-label="Previous">Delete</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="grid_3 grid_5 wow fadeInRight animated" data-wow-delay=".5s" align="center">
+    <nav>
+        <ul class="pagination pagination-lg">
+            <li><a href="@Url.Action("F_Events", "Home", new { data = 1 })" aria-label="Previous"><span aria-hidden="true"><<</span></a></li>
+            <li><a href="@Url.Action("P_Events", "Home", new { data = 1 })"><</a></li>
+            <li><a href="@Url.Action("N_Events", "Home", new { data = 1 })">></a></li>
+            <li><a href="@Url.Action("L_Events", "Home", new { data = 1 })" aria-label="Next"><span aria-hidden="true">>></span></a></li>
+        </ul>
+    </nav>
+    <div class="clearfix"> </div>
+</div>

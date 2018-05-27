@@ -17,35 +17,47 @@
             <li role="presentation">
                 <a href="@Url.Action("Eventfeed","Home")" role="tab" id="myTabDrop1-contents">Add Events</a>
             </li>
+            <li role="presentation">
+                <a href="@Url.Action("DeleteEvent","Home")" role="tab" id="myTabDrop1-contents">Delete Events</a>
+            </li>
             <li><a href='@Url.Action("Logout", "Home")' id="home-tab" role="tab">Logout</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
             <div id="myTabContent" class="tab-content">
-                <div class="sp-testimonials">
-                    <div class="sp">
-                        <div class="col-md-6 pic wow fadeInRight animated animated" data-wow-delay=".5s">
-                            <div class="styled-input wide wow animated animated" data-wow-delay=".5s">
-                                <h3>Update Base price for Adult or children</h3>
-                                <span></span>
-                            </div>
-                            <form method="post" action=@Url.Action("UpdateNow","Home")>
-                                <div class="styled-input wide" data-wow-delay=".5s">
-                                    <input type="number" id="base_adult" name="base_adult" min="1000" max="100000" value="1500" required />
-                                    <label>Base Price for Adults</label>
-                                    <span></span>
-                                </div>
-                                <div class="styled-input wide" data-wow-delay=".5s">
-                                    <input type="number" id="base_child" name="base_child" min="500" value="1000" max="100000" required />
-                                    <label>Base Price for Children</label>
-                                    <span></span>
-                                </div>
-                                <div class="send wow shake animated animated" data-wow-delay=".5s">
-                                    <input type="submit" value="Update Now">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
+
+                <hr class="bs-docs-separator">
+                <div class="bs-docs-example">
+                    <form method="post" action=@Url.Action("UpdateNow","Home")>
+                        <table class="table table-striped" align="center" style="width:50%">
+                            <thead>
+                                <tr>
+                                    <th>Package Type</th>
+                                    <th>Adult Rate</th>
+                                    <th>Child Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Unlimited Package</td>
+                                    <td><input type="number" id="p1_base_adult" name="p1_base_adult" min="500" value="1000" max="100000" required /></td>
+                                    <td><input type="number" id="p1_base_child" name="p1_base_child" min="500" value="1000" max="100000" required /></td>
+                                </tr>
+                                <tr>
+                                    <td>Limited Package</td>
+                                    <td><input type="number" id="p2_base_adult" name="p2_base_adult" min="500" value="1000" max="100000" required /></td>
+                                    <td><input type="number" id="p2_base_child" name="p2_base_child" min="500" value="1000" max="100000" required /></td>
+                                </tr>
+                                <tr>
+                                    <td>Small Package</td>
+                                    <td><input type="number" id="p3_base_adult" name="p3_base_adult" min="500" value="1000" max="100000" required /></td>
+                                    <td><input type="number" id="p3_base_child" name="p3_base_child" min="500" value="1000" max="100000" required /></td>
+                                </tr>
+                                <tr colspan="3" align="center">
+                                    <td><input type="submit" value="Update Now"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </form>
                 </div>
             </div>
         </div>

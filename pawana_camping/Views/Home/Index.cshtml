@@ -453,6 +453,16 @@
                                     <span></span>
                                 </div>
                                 <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
+                                    <input type="text" id="temp1" name="temp1" hidden/>
+                                    <select id="package" name="package" width="550" style="width: 550px">
+                                        <option value="1" selected="selected">Unlimited</option>
+                                        <option value="2">Limited</option>
+                                        <option value="3">Small</option>
+                                    </select>
+                                    <label>Select Type of Package</label>
+                                    <span></span>
+                                </div>
+                                <div class="styled-input wide wow slideInUp animated animated" data-wow-delay=".5s">
                                     <input type="number" id="adult" name="adult" min="1" max="1000" value="1" required />
                                     <label>Number of Adults</label>
                                     <span></span>
@@ -559,14 +569,15 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#partial_payment').change(function () {
-            var part_pay = 0; 
-            if($(this).prop("checked")) {
+            var part_pay = 0;
+            if ($(this).prop("checked")) {
                 part_pay = 1;
             }
             
             var data = JSON.stringify({
                 'adult': $('#adult').val(),
                 'child': $('#child').val(),
+                'package': $('#package').val(),
                 'part_pay': part_pay
             });
 
@@ -631,9 +642,11 @@
             if ($('#partial_payment').prop("checked")) {
                 part_pay = 1;
             }
+   
             var data = JSON.stringify({
                 'adult': $('#adult').val(),
                 'child': $('#child').val(),
+                'package': $('#package').val(),
                 'part_pay': part_pay
             });
                         
@@ -663,6 +676,37 @@
             var data = JSON.stringify({
                 'adult': $('#adult').val(),
                 'child': $('#child').val(),
+                'package': $('#package').val(),
+                'part_pay': part_pay
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Home/calculate_amount",
+                data: data,
+                dataType: 'json',
+                success: function (d) {
+                    var list = d.c;
+                    $('#total_cost').val(list);
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                },
+                contentType: 'application/json'
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $('#package').change(function () {
+            var part_pay = 0;
+            if ($('#partial_payment').prop("checked")) {
+                part_pay = 1;
+            }
+            var data = JSON.stringify({
+                'adult': $('#adult').val(),
+                'child': $('#child').val(),
+                'package': $('#package').val(),
                 'part_pay': part_pay
             });
 
@@ -691,6 +735,7 @@
             var data = JSON.stringify({
                 'adult': $('#adult').val(),
                 'child': $('#child').val(),
+                'package':$('#package').val(),
                 'part_pay': part_pay
             });
 

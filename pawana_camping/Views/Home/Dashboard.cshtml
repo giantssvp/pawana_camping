@@ -4,9 +4,13 @@
 
 @{
     var results = ViewBag.list;
-    int cnt = ViewBag.total;
+    int? cnt = new int?();
+    cnt = ViewBag.total;
+    if (cnt == null)
+    {
+        cnt = 0;
+    }
 }
-
 @Html.Partial("menu1")
 
 <div class="grid_3 grid_5 wow fadeInLeft animated" data-wow-delay=".5s">
@@ -21,6 +25,9 @@
             </li>
             <li role="presentation">
                 <a href="@Url.Action("Eventfeed","Home")" role="tab" id="myTabDrop1-contents">Add Events</a>
+            </li>
+            <li role="presentation">
+                <a href="@Url.Action("DeleteEvent","Home")" role="tab" id="myTabDrop1-contents">Delete Events</a>
             </li>
             <li><a href='@Url.Action("Logout", "Home")' id="home-tab" role="tab">Logout</a></li>
         </ul>
